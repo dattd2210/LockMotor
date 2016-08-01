@@ -1,4 +1,10 @@
 <resources>
-    <string name="app_name">LockMotor</string>
+    <string name="app_name">SmartLock</string>
+    
+    <string name="tv_turn_off_engine">Tắt\nđộng cơ</string>
+    <string name="tv_turn_off_anti_thief">Tắt\nchống trộm</string>
+    <string name="tv_turn_on_anti_thief">Bật\nchống trộm</string>
+    <string name="tv_find_my_bike">Tìm xe\ntrong bãi</string>
+    <string name="tv_find_location">Tìm\nvị trí xe</string>
 
 </resources>

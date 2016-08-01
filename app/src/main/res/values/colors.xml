@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="primary_color">#a39161</color>
-    <color name="primary_color_dark">#897a52</color>
+    <color name="primary_color">#f18431</color>
+    <color name="primary_color_dark">#c36924</color>
     <color name="accent_color">#A39161</color>
-
-    <color name="transparent">#00000000</color>
-    <color name="purple_color">#9C27B0</color>
-    <color name="purple_color_dark">#7B1FA2</color>
-    <color name="indigo_color">#3F51B5</color>
 
     <color name="high_light_color">#ececec</color>
     <color name="shadow">#e3e1e1</color>
@@ -32,9 +27,4 @@
     <color name="rest_time_red">#CCf36158</color>
     <color name="red_button_color">#f36158</color>
     <color name="red_button_color_dark">#be4c45</color>
-
-    <color name="swipe_color_1">#897a52</color>
-    <color name="swipe_color_2">#a39161</color>
-    <color name="swipe_color_3">#b6a26c</color>
-    <color name="swipe_color_4">#ccb67a</color>
 </resources>

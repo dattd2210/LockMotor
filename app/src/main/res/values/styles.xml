@@ -60,7 +60,7 @@
     </style>
 
     <style name="ToolbarPopup" parent="Widget.AppCompat.Light.PopupMenu">
-        <item name="android:background">@color/red_color</item>
+        <item name="android:background">@color/primary_color</item>
         <item name="android:textColor">@color/bright_color</item>
         <item name="android:layout_gravity">center</item>
     </style>
@@ -140,18 +140,6 @@
     <style name="text_bright_small">
         <item name="android:textColor">@color/bright_color</item>
         <item name="android:textSize">@dimen/font_small</item>
-    </style>
-
-    <style name="text_btn_city_choosed">
-        <item name="android:textColor">@color/red_color</item>
-        <item name="android:textSize">@dimen/font_18_sp</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="text_btn_city">
-        <item name="android:textColor">@color/light_color</item>
-        <item name="android:textSize">@dimen/font_18_sp</item>
-        <item name="android:textAllCaps">false</item>
     </style>
 
 </resources>
