@@ -1,12 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bright_color">
 
-    <ImageButton
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:scaleType="centerInside"
-        android:src="@mipmap/test_lozenge"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/setting_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_color"
+        android:elevation="@dimen/elevation"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp"
+        app:popupTheme="@style/ToolbarPopup"
+        app:theme="@style/ToolbarStyle"
+        app:titleTextAppearance="@style/Toolbar.TitleText">
+
+        <ImageView
+            android:id="@+id/iv_back_press"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_back_press" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/text_black_large"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/iv_back_press"
+            android:gravity="center"
+            android:text="@string/tv_setting_toolbar_title"
+            android:textColor="@color/bright_color"
+            android:textSize="@dimen/font_22_sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <Button
+        android:id="@+id/btn_account_check"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/setting_toolbar"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/btn_bright_border_radius"
+        android:elevation="@dimen/elevation"
+        android:text="@string/btn_account_check"
+        android:textAllCaps="false"
+        android:textSize="@dimen/font_20_sp" />
+
+    <Button
+        android:id="@+id/btn_account_recharge"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/btn_account_check"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_bright_border_radius"
+        android:elevation="@dimen/elevation"
+        android:text="@string/btn_account_recharge"
+        android:textAllCaps="false"
+        android:textSize="@dimen/font_20_sp" />
+
+    <Button
+        android:id="@+id/btn_setting_finger_printer"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/btn_account_recharge"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_bright_border_radius"
+        android:elevation="@dimen/elevation"
+        android:text="@string/btn_setting_finger_printer"
+        android:textAllCaps="false"
+        android:textSize="@dimen/font_20_sp" />
+
+    <Button
+        android:id="@+id/btn_setting_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/btn_setting_finger_printer"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_bright_border_radius"
+        android:elevation="@dimen/elevation"
+        android:text="@string/btn_setting_phone_number"
+        android:textAllCaps="false"
+        android:textSize="@dimen/font_20_sp" />
+
+    <Button
+        android:id="@+id/btn_change_password"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/btn_setting_phone_number"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_bright_border_radius"
+        android:elevation="@dimen/elevation"
+        android:text="@string/btn_change_password"
+        android:textAllCaps="false"
+        android:textSize="@dimen/font_20_sp" />
 
 </RelativeLayout>

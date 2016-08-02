@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_bright_border_radius">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/account_check_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_color"
+        android:elevation="@dimen/elevation"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp"
+        app:popupTheme="@style/ToolbarPopup"
+        app:theme="@style/ToolbarStyle"
+        app:titleTextAppearance="@style/Toolbar.TitleText">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/text_black_large"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/iv_back_press"
+            android:gravity="center"
+            android:text="@string/tv_account_check_title"
+            android:textAlignment="gravity"
+            android:textColor="@color/bright_color"
+            android:textSize="@dimen/font_22_sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/tv_account_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/account_check_toolbar"
+        android:layout_marginTop="@dimen/large_space"
+        android:gravity="center_horizontal"
+        android:paddingLeft="@dimen/large_space"
+        android:paddingRight="@dimen/large_space"
+        android:textAlignment="gravity"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_20_sp" />
+
+    <Button
+        android:id="@+id/btn_account_check_ok"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/tv_account_info"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/large_space"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginTop="@dimen/large_space"
+        android:background="@drawable/button_orange_border"
+        android:elevation="@dimen/elevation"
+        android:text="@string/btn_finger_printer_ok"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/font_20_sp" />
+
+</RelativeLayout>

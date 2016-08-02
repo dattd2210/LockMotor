@@ -1,10 +1,55 @@
 <resources>
     <string name="app_name">SmartLock</string>
-    
+
+    <!--Home Screen-->
     <string name="tv_turn_off_engine">Tắt\nđộng cơ</string>
     <string name="tv_turn_off_anti_thief">Tắt\nchống trộm</string>
     <string name="tv_turn_on_anti_thief">Bật\nchống trộm</string>
     <string name="tv_find_my_bike">Tìm xe\ntrong bãi</string>
     <string name="tv_find_location">Tìm\nvị trí xe</string>
+
+    <!--Setting Screen-->
+    <string name="tv_setting_toolbar_title">Cài đặt</string>
+    <string name="btn_account_recharge">Nạp tài khoản</string>
+    <string name="btn_account_check">Kiểm tra tài khoản</string>
+    <string name="btn_setting_finger_printer">Cài đặt dấu vân tay</string>
+    <string name="btn_setting_phone_number">Cài đặt số điện thoại</string>
+    <string name="btn_change_password">Thay đổi mật khẩu</string>
+
+    <!--Account Recharge Dialog-->
+    <string name="tv_recharge_title">Nạp tài khoản</string>
+    <string name="tv_num_card">Số thẻ cào</string>
+    <string name="btn_recharge_ok">Nạp</string>
+    <string name="btn_recharge_cancel">Hủy</string>
+
+    <!--Finger Printer Dialog-->
+    <string name="tv_finger_printer_title">Cài đặt dấu vân tay</string>
+    <string name="tv_action_type">Loại cài đặt</string>
+    <string name="tv_user_name">Chọn người dùng</string>
+    <string name="btn_finger_printer_ok">OK</string>
+    <string name="btn_finger_printer_cancel">Hủy</string>
+    <string name="sn_action_type_create">Thêm mới</string>
+    <string name="sn_action_type_delete">Xóa</string>
+    <string name="sn_action_type_edit">Sửa</string>
+
+    <!--Phone Number Dialog-->
+    <string name="tv_phone_number_title">Cài đặt số điện thoại</string>
+    <string name="tv_phone_number">Số điện thoại</string>
+    <string name="sn_phone_number_type_smartphone">Số điện thoại trên smartphone</string>
+    <string name="sn_phone_number_type_device">Số điện thoại trên thiết bị chống trộm</string>
+
+    <!--Change password Dialog-->
+    <string name="tv_change_password_title">Thay đổi mật khẩu</string>
+    <string name="tv_old_password">Mật khẩu cũ</string>
+    <string name="tv_new_password">Mật khẩu mới</string>
+    <string name="tv_confirm_password">Xác nhận lại mật khẩu</string>
+    <string name="et_password_hint">Mật khẩu</string>
+
+    <!--Confirm Dialog-->
+    <string name="tv_confirm_title">Xác nhận</string>
+    <string name="tv_confirm_info">Bạn có chắc muốn thực hiện thao tác này không?</string>
+
+    <!--Account Check Dialog-->
+    <string name="tv_account_check_title">Thông tin tài khoản</string>
 
 </resources>

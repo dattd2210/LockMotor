@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/btn_bright_border_radius">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/finger_printer_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_color"
+        android:elevation="@dimen/elevation"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp"
+        app:popupTheme="@style/ToolbarPopup"
+        app:theme="@style/ToolbarStyle"
+        app:titleTextAppearance="@style/Toolbar.TitleText">
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/text_black_large"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/iv_back_press"
+            android:gravity="center"
+            android:text="@string/tv_finger_printer_title"
+            android:textAlignment="gravity"
+            android:textColor="@color/bright_color"
+            android:textSize="@dimen/font_22_sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <Spinner
+        android:id="@+id/sn_action_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/finger_printer_toolbar"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space"
+        android:layout_marginTop="@dimen/large_space"
+        android:elevation="@dimen/elevation" />
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sn_action_type"
+        android:layout_marginTop="@dimen/large_space"
+        android:paddingLeft="@dimen/large_space"
+        android:paddingRight="@dimen/large_space"
+        android:text="@string/tv_user_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/font_20_sp" />
+
+    <Spinner
+        android:id="@+id/sn_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_user_name"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space"
+        android:layout_marginTop="@dimen/large_space"
+        android:elevation="@dimen/elevation" />
+
+    <Button
+        android:id="@+id/btn_finger_printer_ok"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/sn_user_name"
+        android:layout_marginBottom="@dimen/large_space"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginTop="@dimen/large_space"
+        android:background="@drawable/button_orange_border"
+        android:elevation="@dimen/elevation"
+        android:text="@string/btn_finger_printer_ok"
+        android:textAllCaps="false"
+        android:textColor="@color/bright_color"
+        android:textSize="@dimen/font_20_sp" />
+
+    <Button
+        android:id="@+id/btn_finger_printer_cancel"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/sn_user_name"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space"
+        android:layout_marginTop="@dimen/large_space"
+        android:background="@drawable/btn_bright_border_radius"
+        android:elevation="@dimen/elevation"
+        android:text="@string/btn_finger_printer_cancel"
+        android:textAllCaps="false"
+        android:textSize="@dimen/font_20_sp" />
+
+</RelativeLayout>
