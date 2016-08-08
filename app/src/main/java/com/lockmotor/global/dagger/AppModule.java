@@ -1,12 +1,14 @@
 package com.lockmotor.global.dagger;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.lockmotor.base.baseView.BaseView;
 import com.lockmotor.base.managers.cacheManager.CacheManager;
 import com.lockmotor.base.managers.cacheManager.CacheManagerImpl;
 import com.lockmotor.base.utils.stringUtil.StringUtilImpl;
 import com.lockmotor.base.utils.stringUtil.StringUtils;
+import com.lockmotor.global.GlobalConstant;
 
 import javax.inject.Singleton;
 
@@ -57,6 +59,13 @@ public class AppModule {
     @Singleton
     Realm provideRealm(Context context) {
         return Realm.getInstance(context);
+    }
+
+    @Provides
+    @Singleton
+    SharedPreferences provideSharePreferences(Context context)
+    {
+        return context.getSharedPreferences(GlobalConstant.SHARE_PREFERENCES_NAME,context.MODE_PRIVATE);
     }
 }
 

@@ -1,51 +1,81 @@
 package com.lockmotor.implement.Views.Home;
 
+import android.app.Dialog;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.jakewharton.rxbinding.view.RxView;
 import com.lockmotor.R;
+import com.lockmotor.global.GlobalConstant;
 import com.lockmotor.implement.LockMotorActivity;
+
+import rx.Subscription;
+import rx.functions.Action1;
 
 /**
  * Created by Tran Dinh Dat on 3/26/2016.
  */
 public class HomeActivity extends LockMotorActivity {
 
+    private SharedPreferences sharedPreferences;
     RelativeLayout layout;
 
     @Override
-    protected void setContentView() {
-        super.setContentView();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
-        layout = (RelativeLayout)findViewById(R.id.root_layout);
+
+        sharedPreferences = this.getComponent().getSharePreferences();
+
+        if(sharedPreferences.getString(GlobalConstant.DEVICE_PHONE_NUMBER,"").equals("")) {
+            Log.d("Home","Bi null roi");
+        }
+        layout = (RelativeLayout) findViewById(R.id.root_layout);
 
         final ImageView imageView = (ImageView) findViewById(R.id.iv_turn_off_engine);
-        Button btn_1 = (Button)findViewById(R.id.btn_turn_off_engine1);
-        btn_1.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
-                    case MotionEvent.ACTION_DOWN:
-                        imageView.setImageResource(R.mipmap.ic_btn_turn_off);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        imageView.setImageResource(R.mipmap.ic_btn_normal);
-                        break;
-                }
-                return true;
-            }
-        });
+        Button btn_1 = (Button) findViewById(R.id.btn_turn_off_engine1);
 
-        Button btn_2 = (Button)findViewById(R.id.btn_turn_off_engine2);
+        Subscription buttonSub =
+                RxView.touches(btn_1).subscribe(new Action1<MotionEvent>() {
+                    @Override
+                    public void call(MotionEvent motionEvent) {
+                        switch (motionEvent.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                imageView.setImageResource(R.mipmap.ic_btn_turn_off);
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                imageView.setImageResource(R.mipmap.ic_btn_normal);
+                                break;
+                        }
+                    }
+                });
+//        btn_1.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        imageView.setImageResource(R.mipmap.ic_btn_turn_off);
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                        imageView.setImageResource(R.mipmap.ic_btn_normal);
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
+
+        Button btn_2 = (Button) findViewById(R.id.btn_turn_off_engine2);
         btn_2.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         imageView.setImageResource(R.mipmap.ic_btn_turn_off);
                         break;
@@ -59,12 +89,11 @@ public class HomeActivity extends LockMotorActivity {
 
 
         final ImageView imageView1 = (ImageView) findViewById(R.id.iv_anti_thief);
-        Button btn_11 = (Button)findViewById(R.id.btn_anti_thief1);
+        Button btn_11 = (Button) findViewById(R.id.btn_anti_thief1);
         btn_11.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         imageView1.setImageResource(R.mipmap.ic_btn_turn_off);
                         break;
@@ -76,12 +105,11 @@ public class HomeActivity extends LockMotorActivity {
             }
         });
 
-        Button btn_21 = (Button)findViewById(R.id.btn_anti_thief2);
+        Button btn_21 = (Button) findViewById(R.id.btn_anti_thief2);
         btn_21.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         imageView1.setImageResource(R.mipmap.ic_btn_turn_off);
                         break;
@@ -95,12 +123,11 @@ public class HomeActivity extends LockMotorActivity {
 
 
         final ImageView imageView2 = (ImageView) findViewById(R.id.iv_find_location);
-        Button btn_12 = (Button)findViewById(R.id.btn_find_location1);
+        Button btn_12 = (Button) findViewById(R.id.btn_find_location1);
         btn_12.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         imageView2.setImageResource(R.mipmap.ic_btn_turn_off);
                         break;
@@ -112,12 +139,11 @@ public class HomeActivity extends LockMotorActivity {
             }
         });
 
-        Button btn_22 = (Button)findViewById(R.id.btn_find_location2);
+        Button btn_22 = (Button) findViewById(R.id.btn_find_location2);
         btn_22.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         imageView2.setImageResource(R.mipmap.ic_btn_turn_off);
                         break;
@@ -131,12 +157,11 @@ public class HomeActivity extends LockMotorActivity {
 
 
         final ImageView imageView3 = (ImageView) findViewById(R.id.iv_find_my_bike);
-        Button btn_13 = (Button)findViewById(R.id.btn_find_my_bike1);
+        Button btn_13 = (Button) findViewById(R.id.btn_find_my_bike1);
         btn_13.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         imageView3.setImageResource(R.mipmap.ic_btn_turn_off);
                         break;
@@ -148,12 +173,11 @@ public class HomeActivity extends LockMotorActivity {
             }
         });
 
-        Button btn_23 = (Button)findViewById(R.id.btn_find_my_bike2);
+        Button btn_23 = (Button) findViewById(R.id.btn_find_my_bike2);
         btn_23.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction())
-                {
+                switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         imageView3.setImageResource(R.mipmap.ic_btn_turn_off);
                         break;
@@ -164,5 +188,12 @@ public class HomeActivity extends LockMotorActivity {
                 return true;
             }
         });
+    }
+
+    private void showConfigPhoneDialog()
+    {
+        Dialog configPhoneDialog = new Dialog(this);
+        configPhoneDialog.setContentView(R.layout.dialog_config_phone_number);
+        configPhoneDialog.show();
     }
 }

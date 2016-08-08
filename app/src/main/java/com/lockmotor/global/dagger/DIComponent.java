@@ -1,6 +1,7 @@
 package com.lockmotor.global.dagger;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.lockmotor.base.baseView.BaseActivity;
 import com.lockmotor.base.baseView.BaseView;
@@ -26,6 +27,7 @@ public interface DIComponent {
     StringUtils getStringUtils();
     CacheManager getCacheManager();
     Realm getRealm();
+    SharedPreferences getSharePreferences();
 
     Retrofit getRetrofit();
     LockMotorAPI getLockMotorAPI();
