@@ -2,6 +2,7 @@ package com.lockmotor.global.dagger;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.telephony.SmsManager;
 
 import com.lockmotor.base.baseView.BaseView;
 import com.lockmotor.base.managers.cacheManager.CacheManager;
@@ -23,7 +24,7 @@ import io.realm.Realm;
 public class AppModule {
     private Context context;
 
-    public AppModule(){
+    public AppModule() {
 
     }
 
@@ -63,9 +64,14 @@ public class AppModule {
 
     @Provides
     @Singleton
-    SharedPreferences provideSharePreferences(Context context)
-    {
-        return context.getSharedPreferences(GlobalConstant.SHARE_PREFERENCES_NAME,context.MODE_PRIVATE);
+    SharedPreferences provideSharePreferences(Context context) {
+        return context.getSharedPreferences(GlobalConstant.SHARE_PREFERENCES_NAME, context.MODE_PRIVATE);
+    }
+
+    @Provides
+    @Singleton
+    SmsManager provideSmsManager() {
+        return SmsManager.getDefault();
     }
 }
 

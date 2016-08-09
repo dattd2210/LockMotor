@@ -55,7 +55,7 @@
     <!--First Config-->
     <string name="tv_config_title">Cài đặt ban đầu</string>
     <string name="tv_noti_device_phone_number">Hãy điền số điện thoại bạn đã cài đặt trên thiết bị để phần mềm có thể liên lạc với thiết bị !!!</string>
-    <string name="et_phone_number_hint">Số điện thoại thiết bị</string>
+    <string name="et_device_number_hint">Số điện thoại thiết bị</string>
     <string name="btn_config_cancel">Thoát</string>
     <string name="btn_config_next">Tiếp theo</string>
 

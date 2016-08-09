@@ -6,7 +6,7 @@
     android:background="@drawable/btn_bright_border_radius">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/config_phone_number_toolbar"
+        android:id="@+id/config_device_number_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/primary_color"
@@ -19,7 +19,7 @@
         app:titleTextAppearance="@style/Toolbar.TitleText">
 
         <TextView
-            android:id="@+id/tv_config_phone_number_title"
+            android:id="@+id/tv_config_device_number_title"
             style="@style/text_black_large"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,10 +32,10 @@
 
 
     <TextView
-        android:id="@+id/tv_config_phone_number_noti"
+        android:id="@+id/tv_config_device_number_noti"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/config_phone_number_toolbar"
+        android:layout_below="@id/config_device_number_toolbar"
         android:layout_marginTop="@dimen/large_space"
         android:lineSpacingExtra="@dimen/line_dp"
         android:paddingLeft="@dimen/xxlarge_space"
@@ -46,25 +46,25 @@
         android:textSize="@dimen/font_20_sp" />
 
     <EditText
-        android:id="@+id/et_config_phone_number"
+        android:id="@+id/et_config_device_number"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/tv_config_phone_number_noti"
+        android:layout_below="@id/tv_config_device_number_noti"
         android:layout_marginLeft="@dimen/large_space"
         android:layout_marginRight="@dimen/large_space"
         android:layout_marginTop="@dimen/large_space"
         android:background="@drawable/et_highlight_border"
-        android:hint="@string/et_phone_number_hint"
+        android:hint="@string/et_device_number_hint"
         android:inputType="number"
         android:maxLength="20"
         android:paddingLeft="@dimen/large_space"
         android:textSize="@dimen/font_18_sp" />
 
     <Button
-        android:id="@+id/btn_config_phone_number_cancel"
+        android:id="@+id/btn_config_device_number_cancel"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_below="@id/et_config_phone_number"
+        android:layout_below="@id/et_config_device_number"
         android:layout_marginBottom="@dimen/large_space"
         android:layout_marginLeft="@dimen/large_space"
         android:layout_marginTop="@dimen/large_space"
@@ -75,11 +75,11 @@
         android:textSize="@dimen/font_20_sp" />
 
     <Button
-        android:id="@+id/btn_config_phone_number_next"
+        android:id="@+id/btn_config_device_number_next"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/et_config_phone_number"
+        android:layout_below="@id/et_config_device_number"
         android:layout_marginBottom="@dimen/large_space"
         android:layout_marginRight="@dimen/large_space"
         android:layout_marginTop="@dimen/large_space"

@@ -22,10 +22,6 @@ android {
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor' // butterknife
     }
-
-    dataBinding {
-        enabled = true
-    }
 }
 
 dependencies {
@@ -36,6 +32,7 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.jakewharton:butterknife:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.2'
     compile 'com.google.code.gson:gson:2.4'
     compile 'io.realm:realm-android:0.87.5'
@@ -46,6 +43,7 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
     compile 'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
     compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
+
 
     compile 'org.parceler:parceler-api:1.1.1'
     apt 'org.parceler:parceler:1.1.1'

@@ -19,7 +19,7 @@ public class LockMotorApplication extends BaseApplication {
 
         diComponent = DaggerDIComponent.builder()
                 .networkModule(new NetworkModule())
-                .appModule(new AppModule())
+                .appModule(new AppModule(this))
                 .build();
     }
 

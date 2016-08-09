@@ -125,6 +125,7 @@
                 android:src="@mipmap/ic_turn_off_anti_thief" />
 
             <TextView
+                android:id="@+id/tv_anti_thief"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/iv_anti_thief_sub"
