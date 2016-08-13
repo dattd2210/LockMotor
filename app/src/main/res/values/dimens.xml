@@ -27,6 +27,6 @@
     <dimen name="xxlarge_radius">8dp</dimen>
     <dimen name="xxxlarge_radius">10dp</dimen>
 
-    <dimen name="elevation">1.8dp</dimen>
+    <dimen name="elevation">2.8dp</dimen>
 
 </resources>

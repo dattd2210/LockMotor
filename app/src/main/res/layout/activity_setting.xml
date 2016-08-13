@@ -27,84 +27,59 @@
 
         <TextView
             android:id="@+id/tv_title"
-            style="@style/text_black_large"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/iv_back_press"
             android:gravity="center"
             android:text="@string/tv_setting_toolbar_title"
             android:textColor="@color/bright_color"
-            android:textSize="@dimen/font_22_sp" />
+            android:textSize="@dimen/font_20_sp" />
     </android.support.v7.widget.Toolbar>
 
     <Button
         android:id="@+id/btn_account_check"
+        style="@style/btn_bright_border_radius"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_below="@id/setting_toolbar"
-        android:layout_marginLeft="@dimen/large_space"
-        android:layout_marginRight="@dimen/large_space"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/btn_bright_border_radius"
+        android:layout_marginTop="@dimen/xxlarge_space"
         android:elevation="@dimen/elevation"
-        android:text="@string/btn_account_check"
-        android:textAllCaps="false"
-        android:textSize="@dimen/font_20_sp" />
+        android:text="@string/btn_account_check" />
 
     <Button
         android:id="@+id/btn_account_recharge"
+        style="@style/btn_bright_border_radius"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_below="@id/btn_account_check"
-        android:layout_marginLeft="@dimen/large_space"
-        android:layout_marginRight="@dimen/large_space"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_bright_border_radius"
         android:elevation="@dimen/elevation"
-        android:text="@string/btn_account_recharge"
-        android:textAllCaps="false"
-        android:textSize="@dimen/font_20_sp" />
+        android:text="@string/btn_account_recharge" />
 
     <Button
         android:id="@+id/btn_setting_finger_printer"
+        style="@style/btn_bright_border_radius"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_below="@id/btn_account_recharge"
-        android:layout_marginLeft="@dimen/large_space"
-        android:layout_marginRight="@dimen/large_space"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_bright_border_radius"
         android:elevation="@dimen/elevation"
-        android:text="@string/btn_setting_finger_printer"
-        android:textAllCaps="false"
-        android:textSize="@dimen/font_20_sp" />
+        android:text="@string/btn_setting_finger_printer" />
 
     <Button
         android:id="@+id/btn_setting_phone_number"
+        style="@style/btn_bright_border_radius"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_below="@id/btn_setting_finger_printer"
-        android:layout_marginLeft="@dimen/large_space"
-        android:layout_marginRight="@dimen/large_space"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_bright_border_radius"
         android:elevation="@dimen/elevation"
-        android:text="@string/btn_setting_phone_number"
-        android:textAllCaps="false"
-        android:textSize="@dimen/font_20_sp" />
+        android:text="@string/btn_setting_phone_number" />
 
     <Button
         android:id="@+id/btn_change_password"
+        style="@style/btn_bright_border_radius"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:layout_below="@id/btn_setting_phone_number"
-        android:layout_marginLeft="@dimen/large_space"
-        android:layout_marginRight="@dimen/large_space"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/btn_bright_border_radius"
         android:elevation="@dimen/elevation"
-        android:text="@string/btn_change_password"
-        android:textAllCaps="false"
-        android:textSize="@dimen/font_20_sp" />
+        android:text="@string/btn_change_password" />
 
 </RelativeLayout>

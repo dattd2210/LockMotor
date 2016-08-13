@@ -17,4 +17,9 @@ public abstract class LockMotorActivity extends BaseActivity {
     }
 
     protected abstract void injectComponent(DIComponent component);
+
+    protected void showPasswordDialog()
+    {
+
+    }
 }

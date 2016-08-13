@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bright_color">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/config_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/primary_color"
+        android:elevation="@dimen/elevation"
+        android:minHeight="?attr/actionBarSize"
+        app:contentInsetEnd="0dp"
+        app:contentInsetStart="0dp"
+        app:popupTheme="@style/ToolbarPopup"
+        app:theme="@style/ToolbarStyle"
+        app:titleTextAppearance="@style/Toolbar.TitleText">
+
+        <TextView
+            android:id="@+id/tv_config_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/tv_config_title"
+            android:textAlignment="gravity"
+            android:textColor="@color/bright_color"
+            android:textSize="@dimen/font_20_sp" />
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/tv_config_phone_number"
+        style="@style/text_black_18"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/config_toolbar"
+        android:text="@string/et_phone_number_hint" />
+
+    <EditText
+        android:id="@+id/et_config_phone_number"
+        style="@style/et_bright_18"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/tv_config_phone_number"
+        android:hint="@string/et_phone_number_hint"
+        android:inputType="number"
+        android:maxLength="20" />
+
+    <TextView
+        android:id="@+id/tv_config_device_number"
+        style="@style/text_black_18"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_config_phone_number"
+        android:text="@string/et_device_number_hint" />
+
+    <EditText
+        android:id="@+id/et_config_device_number"
+        style="@style/et_bright_18"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/tv_config_device_number"
+        android:hint="@string/et_device_number_hint"
+        android:inputType="number"
+        android:maxLength="20" />
+
+    <TextView
+        android:id="@+id/tv_config_password"
+        style="@style/text_black_18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_config_device_number"
+        android:text="@string/tv_config_password_password" />
+
+    <EditText
+        android:id="@+id/et_config_password"
+        style="@style/et_bright_18"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/tv_config_password"
+        android:hint="@string/et_password_hint"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:maxLength="30" />
+
+    <TextView
+        android:id="@+id/tv_config_password_confirm"
+        style="@style/text_black_18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_config_password"
+        android:text="@string/tv_config_password_confirm" />
+
+    <EditText
+        android:id="@+id/et_config_password_confirm"
+        style="@style/et_bright_18"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/tv_config_password_confirm"
+        android:hint="@string/tv_config_password_confirm"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:maxLength="30" />
+
+    <Button
+        android:id="@+id/btn_config_cancel"
+        style="@style/btn_bright_border_radius_margin_left"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/et_config_password_confirm"
+        android:layout_marginBottom="@dimen/large_space"
+        android:elevation="@dimen/elevation"
+        android:text="@string/btn_config_cancel"
+        app:layout_widthPercent="40%" />
+
+    <Button
+        android:id="@+id/btn_config_done"
+        style="@style/btn_orange_border_radius_margin_right"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/btn_disable_border_radius"
+        android:layout_below="@id/et_config_password_confirm"
+        android:layout_marginBottom="@dimen/large_space"
+        android:elevation="@dimen/elevation"
+        android:text="@string/btn_config_done"
+        app:layout_widthPercent="40%" />
+
+</android.support.percent.PercentRelativeLayout>

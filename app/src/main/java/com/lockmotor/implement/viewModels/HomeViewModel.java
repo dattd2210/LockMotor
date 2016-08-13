@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lockmotor.R;
+import com.lockmotor.global.GlobalConstant;
 
 /**
  * Created by trandinhdat on 8/9/16.
@@ -25,12 +26,16 @@ public class HomeViewModel {
     private SmsManager smsManager;
     private Activity context;
 
+    //----------------------------------------------------------------------------------------------
+    //Observable
+    //----------------------------------------------------------------------------------------------
+
+
     public HomeViewModel(Activity context) {
         this.context = context;
     }
 
-    public void setSmsManager(SmsManager smsManager)
-    {
+    public void setSmsManager(SmsManager smsManager) {
         this.smsManager = smsManager;
     }
 
@@ -40,8 +45,9 @@ public class HomeViewModel {
 
     /**
      * Update view when click on button
+     *
      * @param imageView button lozenge
-     * @param event user event
+     * @param event     user event
      */
     public void updateViewAfterClick(ImageView imageView, MotionEvent event) {
         switch (event.getAction()) {
@@ -56,14 +62,16 @@ public class HomeViewModel {
 
     /**
      * Update view when click on button anti thief
-     * @param iv_main button lozenge
-     * @param iv_icon icon on button
-     * @param textView textview on button
-     * @param event user event
+     *
+     * @param iv_main           button lozenge
+     * @param iv_icon           icon on button
+     * @param textView          textview on button
+     * @param event             user event
      * @param isTurnOnAntiThief check if anti thief turn on
      * @return change state of anti thief
      */
-    public boolean updateAntiThiefView(ImageView iv_main, ImageView iv_icon, TextView textView, MotionEvent event, boolean isTurnOnAntiThief) {
+    public boolean updateAntiThiefView(ImageView iv_main, ImageView iv_icon, TextView textView,
+                                       MotionEvent event, boolean isTurnOnAntiThief) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (isTurnOnAntiThief) {
                 isTurnOnAntiThief = false;
@@ -84,6 +92,7 @@ public class HomeViewModel {
 
     /**
      * Make a call to device to turn off engine
+     *
      * @param event user event
      */
     public void turnOffEngine(MotionEvent event) {
@@ -96,79 +105,79 @@ public class HomeViewModel {
 
             //start a call
             Intent callIntent = new Intent(Intent.ACTION_CALL);
-            callIntent.setData(Uri.parse("tel:0377778888"));
+            callIntent.setData(Uri.parse("tel:" + GlobalConstant.DEVICE_PHONE_NUMBER));
 
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                Log.e("CALL_CANCEL","Dont have permission");
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                Log.e("CALL_CANCEL", "Dont have permission");
                 return;
             }
             context.startActivity(callIntent);
         }
     }
 
-    /** TODO not done
+    /**
+     * TODO not done
      * Send message to device and listen server to receive location of device and show it to map
+     *
      * @param event user event
      */
-    public void findLocation(MotionEvent event)
-    {
-        if(event.getAction() == MotionEvent.ACTION_DOWN)
-        {
+    public void findLocation(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             try {
-                smsManager.sendTextMessage("phone number", null, "content", null, null);
-            }catch (Exception e)
-            {
+                smsManager.sendTextMessage(GlobalConstant.DEVICE_PHONE_NUMBER, null,
+                        GlobalConstant.CONTENT_FIND_LOCATION, null, null);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    /** TODO change phone number and content
+    /**
      * Send message to device to make an sound on device
+     *
      * @param event user event
      */
-    public void findMyBike(MotionEvent event)
-    {
-        if(event.getAction() == MotionEvent.ACTION_DOWN)
-        {
+    public void findMyBike(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             try {
-                smsManager.sendTextMessage("phone number", null, "content", null, null);
-            }catch (Exception e)
-            {
+                smsManager.sendTextMessage(GlobalConstant.DEVICE_PHONE_NUMBER, null,
+                        GlobalConstant.CONTENT_FIND_MY_BIKE, null, null);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    /** TODO change phone number and content, receive data from server
+    /**
+     * TODO receive data from server
      * Send message to device to turn off anti thief, show noti to user after sent
+     *
      * @param event user event
      */
-    public void turnOffAntiThief(MotionEvent event)
-    {
-        if(event.getAction() == MotionEvent.ACTION_DOWN)
-        {
+    public void turnOffAntiThief(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             try {
-                smsManager.sendTextMessage("phone number", null, "content", null, null);
-            }catch (Exception e)
-            {
+                smsManager.sendTextMessage(GlobalConstant.DEVICE_PHONE_NUMBER, null,
+                        GlobalConstant.CONTENT_UNLOCK, null, null);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    /** TODO change phone number and content, receive data from server
+    /**
+     * TODO receive data from server
      * Send message to device to turn on anti thief, show noti to user after sent
+     *
      * @param event user event
      */
-    public void turnOnAntiThief(MotionEvent event)
-    {
-        if(event.getAction() == MotionEvent.ACTION_DOWN)
-        {
+    public void turnOnAntiThief(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             try {
-                smsManager.sendTextMessage("phone number", null, "content", null, null);
-            }catch (Exception e)
-            {
+                smsManager.sendTextMessage(GlobalConstant.DEVICE_PHONE_NUMBER, null,
+                        GlobalConstant.CONTENT_LOCK, null, null);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

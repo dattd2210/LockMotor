@@ -1,13 +1,12 @@
 package com.lockmotor.implement.views.home;
 
-import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.telephony.SmsManager;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +27,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Tran Dinh Dat on 3/26/2016.
  */
-public class HomeActivity extends LockMotorActivity implements ConfigDeviceNumberDialog.EventHandler{
+public class HomeActivity extends LockMotorActivity implements ConfigDialog.EventHandler {
 
     //Environment variables
     @Inject
@@ -70,10 +69,12 @@ public class HomeActivity extends LockMotorActivity implements ConfigDeviceNumbe
     TextView tv_anti_thief;
 
     //Local variables
-    HomeViewModel viewModel;
+    private HomeViewModel viewModel;
+    private ConfigDialog configDialog;
+
 
     final private CompositeSubscription subscriptions = new CompositeSubscription();
-    boolean isTurnOnAntiThief = true;
+    private boolean isTurnOnAntiThief = true;
 
 
     @Override
@@ -94,10 +95,47 @@ public class HomeActivity extends LockMotorActivity implements ConfigDeviceNumbe
         viewModel.setSmsManager(smsManager);
 
         //Check for first set up
+        setupConfigInfo();
+
+        //set up rx java event
+        initSubscription();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        subscriptions.clear();
+        subscriptions.unsubscribe();
+    }
+
+    //----------------------------------------------------------------------------------------------
+    //Function
+    //----------------------------------------------------------------------------------------------
+    private void showConfigDialog() {
+        configDialog = new ConfigDialog(this);
+        configDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        configDialog.setContentView(R.layout.dialog_config);
+        configDialog.setListener(this);
+        configDialog.show();
+    }
+
+    private void setupConfigInfo() {
+
+        //Config device phone number
         if (sharedPreferences.getString(GlobalConstant.DEVICE_PHONE_NUMBER_KEY, "").equals("")) {
-            Log.d("Home", "Bi null roi");
+            showConfigDialog();
+        } else {
+            GlobalConstant.DEVICE_PHONE_NUMBER =
+                    sharedPreferences.getString(GlobalConstant.DEVICE_PHONE_NUMBER_KEY, "");
+            GlobalConstant.PASSWORD =
+                    GlobalConstant.decryptPassword(sharedPreferences.getString(GlobalConstant.PASSWORD_KEY, ""),
+                            sharedPreferences.getInt(GlobalConstant.PASSWORD_LENGTH_KEY, 0));
+
         }
 
+    }
+
+    private void initSubscription() {
         //Button turn off engine cheat
         subscriptions.add(RxView.touches(btn_turn_off_engine1).subscribe(new Action1<MotionEvent>() {
             @Override
@@ -150,34 +188,18 @@ public class HomeActivity extends LockMotorActivity implements ConfigDeviceNumbe
         subscriptions.add(RxView.touches(btn_anti_thief1).subscribe(new Action1<MotionEvent>() {
             @Override
             public void call(MotionEvent motionEvent) {
-                isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief,iv_anti_thief_sub,
-                        tv_anti_thief,motionEvent,isTurnOnAntiThief);
+                isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
+                        tv_anti_thief, motionEvent, isTurnOnAntiThief);
             }
         }));
 
         subscriptions.add(RxView.touches(btn_anti_thief2).subscribe(new Action1<MotionEvent>() {
             @Override
             public void call(MotionEvent motionEvent) {
-                isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief,iv_anti_thief_sub,
-                        tv_anti_thief,motionEvent,isTurnOnAntiThief);
+                isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
+                        tv_anti_thief, motionEvent, isTurnOnAntiThief);
             }
         }));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        subscriptions.clear();
-        subscriptions.unsubscribe();
-    }
-
-    //----------------------------------------------------------------------------------------------
-    //Function
-    //----------------------------------------------------------------------------------------------
-    private void showConfigPhoneDialog() {
-        Dialog configPhoneDialog = new Dialog(this);
-        configPhoneDialog.setContentView(R.layout.dialog_config_device_number);
-        configPhoneDialog.show();
     }
 
     //----------------------------------------------------------------------------------------------
@@ -189,7 +211,15 @@ public class HomeActivity extends LockMotorActivity implements ConfigDeviceNumbe
     }
 
     @Override
-    public void btnNextClicked(@NonNull View view) {
-
+    public void btnDoneClicked(@NonNull View view) {
+        //TODO send sms to device
+        sharedPreferences.edit().putString(GlobalConstant.DEVICE_PHONE_NUMBER_KEY,
+                configDialog.getDeviceNumber()).apply();
+        sharedPreferences.edit().putString(GlobalConstant.PASSWORD_KEY,
+                GlobalConstant.encryptPassword(configDialog.getPassword())).apply();
+        sharedPreferences.edit().putInt(GlobalConstant.PASSWORD_LENGTH_KEY,
+                configDialog.getPassword().length()).apply();
+        configDialog.hide();
+        configDialog.dismiss();
     }
 }
