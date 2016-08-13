@@ -15,6 +15,7 @@
     <string name="btn_setting_finger_printer">Cài đặt dấu vân tay</string>
     <string name="btn_setting_phone_number">Cài đặt số điện thoại</string>
     <string name="btn_change_password">Thay đổi mật khẩu</string>
+    <string name="btn_help">Hướng dẫn</string>
 
     <!--Account Recharge Dialog-->
     <string name="tv_recharge_title">Nạp tài khoản</string>

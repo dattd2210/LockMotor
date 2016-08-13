@@ -1,5 +1,6 @@
 package com.lockmotor.implement.views.home;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.lockmotor.global.GlobalConstant;
 import com.lockmotor.global.dagger.DIComponent;
 import com.lockmotor.implement.LockMotorActivity;
 import com.lockmotor.implement.viewModels.HomeViewModel;
+import com.lockmotor.implement.views.setting.SettingActivity;
 
 import javax.inject.Inject;
 
@@ -67,6 +69,9 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
     ImageView iv_anti_thief_sub;
     @BindView(R.id.tv_anti_thief)
     TextView tv_anti_thief;
+
+    @BindView(R.id.iv_setting_press)
+    ImageView iv_setting;
 
     //Local variables
     private HomeViewModel viewModel;
@@ -198,6 +203,15 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             public void call(MotionEvent motionEvent) {
                 isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
                         tv_anti_thief, motionEvent, isTurnOnAntiThief);
+            }
+        }));
+
+
+        subscriptions.add(RxView.clicks(iv_setting).subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
+                startActivity(intent);
             }
         }));
     }

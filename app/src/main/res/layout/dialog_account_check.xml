@@ -27,7 +27,7 @@
             android:text="@string/tv_account_check_title"
             android:textAlignment="gravity"
             android:textColor="@color/bright_color"
-            android:textSize="@dimen/font_22_sp" />
+            android:textSize="@dimen/font_20_sp" />
     </android.support.v7.widget.Toolbar>
 
     <TextView
@@ -41,22 +41,19 @@
         android:paddingRight="@dimen/large_space"
         android:textAlignment="gravity"
         android:textColor="@color/black"
-        android:textSize="@dimen/font_20_sp" />
+        android:textSize="@dimen/font_large" />
 
     <Button
         android:id="@+id/btn_account_check_ok"
+        style="@style/btn_orange_border_radius"
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_below="@id/tv_account_info"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/large_space"
-        android:layout_marginLeft="@dimen/large_space"
-        android:layout_marginTop="@dimen/large_space"
         android:background="@drawable/btn_orange_border_radius"
         android:elevation="@dimen/elevation"
         android:text="@string/btn_finger_printer_ok"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
         android:textSize="@dimen/font_20_sp" />
 
 </RelativeLayout>

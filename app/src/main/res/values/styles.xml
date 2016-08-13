@@ -75,6 +75,13 @@
         <item name="android:layout_marginTop">@dimen/large_space</item>
     </style>
 
+    <style name="text_black_large">
+        <item name="android:textColor">@color/black_color</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:layout_marginLeft">@dimen/large_space</item>
+        <item name="android:layout_marginTop">@dimen/large_space</item>
+    </style>
+
 
     <!--######################## EditText style ########################-->
     <style name="et_bright_18">
@@ -83,13 +90,24 @@
         <item name="android:layout_marginTop">@dimen/large_space</item>
         <item name="android:background">@drawable/et_highlight_border</item>
         <item name="android:paddingLeft">@dimen/large_space</item>
+        <item name="android:paddingRight">@dimen/large_space</item>
         <item name="android:textSize">@dimen/font_medium</item>
+    </style>
+
+    <style name="et_bright_large">
+        <item name="android:layout_marginLeft">@dimen/large_space</item>
+        <item name="android:layout_marginRight">@dimen/large_space</item>
+        <item name="android:layout_marginTop">@dimen/large_space</item>
+        <item name="android:background">@drawable/et_highlight_border</item>
+        <item name="android:paddingLeft">@dimen/large_space</item>
+        <item name="android:paddingRight">@dimen/large_space</item>
+        <item name="android:textSize">@dimen/font_large</item>
     </style>
 
     <!--######################## Button style ########################-->
     <style name="btn_bright_border_radius_margin_left">
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_large</item>
         <item name="android:layout_marginLeft">@dimen/large_space</item>
         <item name="android:layout_marginTop">@dimen/large_space</item>
         <item name="android:background">@drawable/btn_bright_border_radius</item>
@@ -98,7 +116,7 @@
     <style name="btn_bright_border_radius_margin_right">
         <item name="android:textAllCaps">false</item>
         <item name="android:layout_alignParentRight">true</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_large</item>
         <item name="android:layout_marginRight">@dimen/large_space</item>
         <item name="android:layout_marginTop">@dimen/large_space</item>
         <item name="android:background">@drawable/btn_bright_border_radius</item>
@@ -106,7 +124,7 @@
 
     <style name="btn_bright_border_radius">
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_large</item>
         <item name="android:layout_marginLeft">@dimen/large_space</item>
         <item name="android:layout_marginRight">@dimen/large_space</item>
         <item name="android:layout_marginTop">@dimen/large_space</item>
@@ -116,7 +134,7 @@
     <style name="btn_orange_border_radius_margin_left">
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/bright_color</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_large</item>
         <item name="android:layout_marginLeft">@dimen/large_space</item>
         <item name="android:layout_marginTop">@dimen/large_space</item>
         <item name="android:background">@drawable/btn_orange_border_radius</item>
@@ -125,7 +143,7 @@
     <style name="btn_orange_border_radius_margin_right">
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/bright_color</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_large</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_marginRight">@dimen/large_space</item>
         <item name="android:layout_marginTop">@dimen/large_space</item>
@@ -135,11 +153,20 @@
     <style name="btn_orange_border_radius">
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/bright_color</item>
-        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textSize">@dimen/font_large</item>
         <item name="android:layout_marginLeft">@dimen/large_space</item>
         <item name="android:layout_marginRight">@dimen/large_space</item>
         <item name="android:layout_marginTop">@dimen/large_space</item>
         <item name="android:background">@drawable/btn_orange_border_radius</item>
+    </style>
+
+    <style name="btn_bright_setting">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/font_large</item>
+        <item name="android:layout_marginLeft">@dimen/large_space</item>
+        <item name="android:layout_marginRight">@dimen/large_space</item>
+        <item name="android:layout_marginTop">@dimen/xlarge_space</item>
+        <item name="android:background">@drawable/btn_bright_border_radius</item>
     </style>
 
 </resources>
