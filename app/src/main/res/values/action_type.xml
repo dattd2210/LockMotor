@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="action_type">
+        <item>Thêm mới</item>
+        <item>Sửa</item>
+        <item>Xóa</item>
+    </string-array>
+</resources>

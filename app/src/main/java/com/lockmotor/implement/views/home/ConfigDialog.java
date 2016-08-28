@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.github.johnpersano.supertoasts.util.Style;
@@ -29,12 +30,12 @@ public class ConfigDialog extends Dialog {
     Button btn_done;
     @BindView(R.id.et_config_device_number)
     EditText et_device_number;
-    @BindView(R.id.et_config_phone_number)
-    EditText et_phone_number;
     @BindView(R.id.et_config_password)
     EditText et_config_password;
     @BindView(R.id.et_config_password_confirm)
     EditText et_config_password_confirm;
+    @BindView(R.id.sn_config_network_provider_list)
+    Spinner sn_config_network_provider_list;
 
     private EventHandler listener;
     private final CompositeSubscription compositeSubscription = new CompositeSubscription();
@@ -50,6 +51,7 @@ public class ConfigDialog extends Dialog {
         ButterKnife.bind(this);
 
         initSubscription();
+        sn_config_network_provider_list.setEnabled(false);
 
         btn_quit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,9 +86,6 @@ public class ConfigDialog extends Dialog {
     //----------------------------------------------------------------------------------------------
     //Getter
     //----------------------------------------------------------------------------------------------
-    public String getPhoneNumber() {
-        return et_phone_number.getText().toString();
-    }
 
     public String getDeviceNumber() {
         return et_device_number.getText().toString();
@@ -108,13 +107,7 @@ public class ConfigDialog extends Dialog {
     }
 
     private void showError() {
-        if (et_phone_number.getText().toString().length() < 10) {
-            showErrorInput(et_phone_number);
-        }
         if (et_device_number.getText().toString().length() < 10) {
-            showErrorInput(et_device_number);
-        }
-        if (et_device_number.getText().toString().equals(et_phone_number.getText().toString())) {
             showErrorInput(et_device_number);
         }
         if (et_config_password.getText().toString().length() <= 6) {
@@ -129,10 +122,7 @@ public class ConfigDialog extends Dialog {
     }
 
     private boolean checkCondition() {
-        if (et_phone_number.getText().toString().length() < 10) return false;
         if (et_device_number.getText().toString().length() < 10) return false;
-        if (et_device_number.getText().toString().equals(et_phone_number.getText().toString()))
-            return false;
         if (et_config_password.getText().toString().length() <= 6) return false;
         if (et_config_password_confirm.getText().toString().length() <= 6) return false;
         if (!et_config_password_confirm.getText().toString().equals(et_config_password.getText().toString()))
@@ -153,7 +143,7 @@ public class ConfigDialog extends Dialog {
 
     private void initSubscription() {
 
-        compositeSubscription.add(RxTextView.textChanges(et_phone_number)
+        compositeSubscription.add(RxTextView.textChanges(et_device_number)
                 .map(new Func1<CharSequence, Boolean>() {
                     @Override
                     public Boolean call(CharSequence charSequence) {
@@ -170,34 +160,11 @@ public class ConfigDialog extends Dialog {
                     public void call(Boolean isValid) {
                         setBtn_doneEnable();
                         if (!isValid) {
-                            showErrorInput(et_phone_number);
-                        } else {
-                            hideErrorInput(et_phone_number);
-                        }
-                    }
-                }));
-
-        compositeSubscription.add(RxTextView.textChanges(et_device_number)
-                .map(new Func1<CharSequence, Boolean>() {
-                    @Override
-                    public Boolean call(CharSequence charSequence) {
-                        if (charSequence.toString().length() >= 10
-                                && !et_device_number.getText().toString().equals(et_phone_number.getText().toString())) {
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    }
-                })
-                .skip(1)
-                .subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean isValid) {
-                        setBtn_doneEnable();
-                        if (!isValid) {
+                            sn_config_network_provider_list.setEnabled(false);
                             showErrorInput(et_device_number);
                         } else {
                             hideErrorInput(et_device_number);
+                            sn_config_network_provider_list.setEnabled(true);
                         }
                     }
                 }));

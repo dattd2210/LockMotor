@@ -63,5 +63,6 @@
     <string name="btn_config_done">Hoàn thành</string>
     <string name="tv_config_password_confirm_error">* Không trùng khớp</string>
     <string name="error_message_input">Hãy điền đầy đủ thông tin!!</string>
+    <string name="tv_network_provider">Nhà mạng</string>
 
 </resources>

@@ -30,15 +30,24 @@
             android:textSize="@dimen/font_20_sp" />
     </android.support.v7.widget.Toolbar>
 
-    <Spinner
-        android:id="@+id/sn_phone_number_type"
+    <TextView
+        android:id="@+id/tv_net_provider"
+        style="@style/text_black_large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/phone_number_toolbar"
+        android:text="@string/tv_network_provider" />
+
+    <Spinner
+        android:id="@+id/sn_phone_number_type"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@id/tv_net_provider"
         android:layout_marginLeft="@dimen/large_space"
         android:layout_marginRight="@dimen/large_space"
         android:layout_marginTop="@dimen/large_space"
-        android:elevation="@dimen/elevation" />
+        android:background="@drawable/et_highlight_border"
+        android:entries="@array/net_provider_array"/>
 
     <TextView
         android:id="@+id/tv_phone_number"

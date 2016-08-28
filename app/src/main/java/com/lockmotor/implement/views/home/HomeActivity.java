@@ -1,10 +1,12 @@
 package com.lockmotor.implement.views.home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.telephony.SmsManager;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -77,9 +79,9 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
     private HomeViewModel viewModel;
     private ConfigDialog configDialog;
 
-
     final private CompositeSubscription subscriptions = new CompositeSubscription();
     private boolean isTurnOnAntiThief = true;
+    private boolean isConfigDone = false;
 
 
     @Override
@@ -111,6 +113,11 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         super.onDestroy();
         subscriptions.clear();
         subscriptions.unsubscribe();
+        configDialog.dismiss();
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     //----------------------------------------------------------------------------------------------
@@ -121,6 +128,13 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         configDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         configDialog.setContentView(R.layout.dialog_config);
         configDialog.setListener(this);
+        configDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                // Prevent dialog close on back press button
+                return keyCode == KeyEvent.KEYCODE_BACK;
+            }
+        });
         configDialog.show();
     }
 
@@ -135,7 +149,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             GlobalConstant.PASSWORD =
                     GlobalConstant.decryptPassword(sharedPreferences.getString(GlobalConstant.PASSWORD_KEY, ""),
                             sharedPreferences.getInt(GlobalConstant.PASSWORD_LENGTH_KEY, 0));
-
+            isConfigDone = true;
         }
 
     }

@@ -30,29 +30,11 @@
     </android.support.v7.widget.Toolbar>
 
     <TextView
-        android:id="@+id/tv_config_phone_number"
-        style="@style/text_black_18"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/config_toolbar"
-        android:text="@string/et_phone_number_hint" />
-
-    <EditText
-        android:id="@+id/et_config_phone_number"
-        style="@style/et_bright_18"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@id/tv_config_phone_number"
-        android:hint="@string/et_phone_number_hint"
-        android:inputType="number"
-        android:maxLength="20" />
-
-    <TextView
         android:id="@+id/tv_config_device_number"
         style="@style/text_black_18"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/et_config_phone_number"
+        android:layout_below="@id/config_toolbar"
         android:text="@string/et_device_number_hint" />
 
     <EditText
@@ -66,11 +48,30 @@
         android:maxLength="20" />
 
     <TextView
+        android:id="@+id/tv_config_network_provider"
+        style="@style/text_black_18"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_config_device_number"
+        android:text="@string/tv_network_provider" />
+
+    <Spinner
+        android:id="@+id/sn_config_network_provider_list"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/et_highlight_border"
+        android:layout_below="@id/tv_config_network_provider"
+        android:layout_marginLeft="@dimen/large_space"
+        android:layout_marginRight="@dimen/large_space"
+        android:layout_marginTop="@dimen/large_space"
+        android:entries="@array/net_provider_array" />
+
+    <TextView
         android:id="@+id/tv_config_password"
         style="@style/text_black_18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/et_config_device_number"
+        android:layout_below="@id/sn_config_network_provider_list"
         android:text="@string/tv_config_password_password" />
 
     <EditText
@@ -81,8 +82,8 @@
         android:layout_below="@id/tv_config_password"
         android:hint="@string/et_password_hint"
         android:inputType="textPassword"
-        android:maxLines="1"
-        android:maxLength="30" />
+        android:maxLength="30"
+        android:maxLines="1" />
 
     <TextView
         android:id="@+id/tv_config_password_confirm"
@@ -100,8 +101,8 @@
         android:layout_below="@id/tv_config_password_confirm"
         android:hint="@string/tv_config_password_confirm"
         android:inputType="textPassword"
-        android:maxLines="1"
-        android:maxLength="30" />
+        android:maxLength="30"
+        android:maxLines="1" />
 
     <Button
         android:id="@+id/btn_config_cancel"
@@ -119,9 +120,9 @@
         style="@style/btn_orange_border_radius_margin_right"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="@drawable/btn_disable_border_radius"
         android:layout_below="@id/et_config_password_confirm"
         android:layout_marginBottom="@dimen/large_space"
+        android:background="@drawable/btn_disable_border_radius"
         android:elevation="@dimen/elevation"
         android:text="@string/btn_config_done"
         app:layout_widthPercent="40%" />
