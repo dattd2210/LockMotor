@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="net_provider_array">
+        <item>Chưa xác định</item>
         <item>Vietel</item>
         <item>Mobifone</item>
         <item>Vinaphone</item>
         <item>Vietnam Mobile</item>
         <item>G Mobile</item>
+        <item>S Fone</item>
     </string-array>
 </resources>

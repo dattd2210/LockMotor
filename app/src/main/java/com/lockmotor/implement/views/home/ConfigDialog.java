@@ -2,7 +2,6 @@ package com.lockmotor.implement.views.home;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,8 +9,10 @@ import android.widget.Spinner;
 
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.github.johnpersano.supertoasts.util.Style;
+import com.jakewharton.rxbinding.view.RxView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.lockmotor.R;
+import com.lockmotor.global.PhoneUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,11 +35,19 @@ public class ConfigDialog extends Dialog {
     EditText et_config_password;
     @BindView(R.id.et_config_password_confirm)
     EditText et_config_password_confirm;
-    @BindView(R.id.sn_config_network_provider_list)
-    Spinner sn_config_network_provider_list;
+    @BindView(R.id.et_config_phone_number)
+    EditText et_config_phone_number;
+    @BindView(R.id.btn_skip)
+    Button btn_skip;
+
+    @BindView(R.id.sn_config_network_provider_1)
+    Spinner sn_config_network_provider_1;
+    @BindView(R.id.sn_config_network_provider_2)
+    Spinner sn_config_network_provider_2;
 
     private EventHandler listener;
     private final CompositeSubscription compositeSubscription = new CompositeSubscription();
+    private boolean canSkip = true;
 
     public ConfigDialog(Context context) {
         super(context);
@@ -51,29 +60,10 @@ public class ConfigDialog extends Dialog {
         ButterKnife.bind(this);
 
         initSubscription();
-        sn_config_network_provider_list.setEnabled(false);
 
-        btn_quit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.btnQuitClicked(v);
-            }
-        });
+        sn_config_network_provider_1.setEnabled(false);
+        sn_config_network_provider_2.setEnabled(false);
 
-        btn_done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!checkCondition()) {
-                    SuperToast.create(getContext(),
-                            getContext().getResources().getString(R.string.error_message_input),
-                            SuperToast.Duration.SHORT,
-                            Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
-                    showError();
-                    return;
-                }
-                listener.btnDoneClicked(v);
-            }
-        });
     }
 
     @Override
@@ -95,6 +85,10 @@ public class ConfigDialog extends Dialog {
         return et_config_password.getText().toString();
     }
 
+    public String getPhoneNumber() {
+        return et_config_phone_number.getText().toString();
+    }
+
     //----------------------------------------------------------------------------------------------
     //Function
     //----------------------------------------------------------------------------------------------
@@ -106,9 +100,26 @@ public class ConfigDialog extends Dialog {
         }
     }
 
+    public void showSkipButton()
+    {
+        if(canSkip) {
+            btn_skip.setVisibility(View.VISIBLE);
+        }
+        else {
+            btn_skip.setVisibility(View.GONE);
+        }
+    }
+
+    public void setCanSkip(boolean canSkip) {
+        this.canSkip = canSkip;
+    }
+
     private void showError() {
         if (et_device_number.getText().toString().length() < 10) {
             showErrorInput(et_device_number);
+        }
+        if (et_config_phone_number.getText().toString().length() < 10) {
+            showErrorInput(et_config_phone_number);
         }
         if (et_config_password.getText().toString().length() <= 6) {
             showErrorInput(et_config_password);
@@ -123,6 +134,7 @@ public class ConfigDialog extends Dialog {
 
     private boolean checkCondition() {
         if (et_device_number.getText().toString().length() < 10) return false;
+        if (et_config_phone_number.getText().toString().length() < 10) return false;
         if (et_config_password.getText().toString().length() <= 6) return false;
         if (et_config_password_confirm.getText().toString().length() <= 6) return false;
         if (!et_config_password_confirm.getText().toString().equals(et_config_password.getText().toString()))
@@ -139,6 +151,23 @@ public class ConfigDialog extends Dialog {
     private void hideErrorInput(EditText et) {
         et.setBackgroundResource(R.drawable.et_highlight_border);
         et.setTextColor(this.getContext().getResources().getColor(R.color.black_color));
+    }
+
+    private void hideNetProvider(Spinner sn) {
+        sn.setEnabled(false);
+        sn.setSelection(0, true);
+    }
+
+    private void showNetProvider(Spinner sn, String phoneNumber) {
+        String phonePre = "";
+        sn.setEnabled(true);
+        if (phoneNumber.startsWith("09") || phoneNumber.startsWith("08")) {
+            phonePre = phoneNumber.substring(0, 3) + "x";
+        }
+        if (phoneNumber.startsWith("01")) {
+            phonePre = phoneNumber.substring(0, 4);
+        }
+        sn.setSelection(PhoneUtils.GetNetProviderFromPhoneNumber(phonePre), true);
     }
 
     private void initSubscription() {
@@ -160,11 +189,37 @@ public class ConfigDialog extends Dialog {
                     public void call(Boolean isValid) {
                         setBtn_doneEnable();
                         if (!isValid) {
-                            sn_config_network_provider_list.setEnabled(false);
+                            hideNetProvider(sn_config_network_provider_1);
                             showErrorInput(et_device_number);
                         } else {
+                            showNetProvider(sn_config_network_provider_1, et_device_number.getText().toString());
                             hideErrorInput(et_device_number);
-                            sn_config_network_provider_list.setEnabled(true);
+                        }
+                    }
+                }));
+
+        compositeSubscription.add(RxTextView.textChanges(et_config_phone_number)
+                .map(new Func1<CharSequence, Boolean>() {
+                    @Override
+                    public Boolean call(CharSequence charSequence) {
+                        if (charSequence.toString().length() >= 10) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                })
+                .skip(1)
+                .subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean isValid) {
+                        setBtn_doneEnable();
+                        if (!isValid) {
+                            hideNetProvider(sn_config_network_provider_2);
+                            showErrorInput(et_config_phone_number);
+                        } else {
+                            showNetProvider(sn_config_network_provider_2, et_config_phone_number.getText().toString());
+                            hideErrorInput(et_config_phone_number);
                         }
                     }
                 }));
@@ -217,15 +272,49 @@ public class ConfigDialog extends Dialog {
                         }
                     }
                 }));
+
+        compositeSubscription.add(RxView.clicks(btn_quit)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        listener.btnQuitClicked();
+                    }
+                }));
+
+        compositeSubscription.add(RxView.clicks(btn_done)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        if (!checkCondition()) {
+                            SuperToast.create(getContext(),
+                                    getContext().getResources().getString(R.string.error_message_input),
+                                    SuperToast.Duration.SHORT,
+                                    Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                            showError();
+                            return;
+                        }
+                        listener.btnDoneClicked();
+                    }
+                }));
+
+        compositeSubscription.add(RxView.clicks(btn_skip)
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        listener.btnSkipClicked();
+                    }
+                }));
     }
 
     //----------------------------------------------------------------------------------------------
     //Event listener
     //----------------------------------------------------------------------------------------------
     interface EventHandler {
-        void btnQuitClicked(@NonNull View view);
+        void btnQuitClicked();
 
-        void btnDoneClicked(@NonNull View view);
+        void btnDoneClicked();
+
+        void btnSkipClicked();
     }
 
     public void setListener(EventHandler listener) {

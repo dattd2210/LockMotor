@@ -11,6 +11,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Display;
@@ -23,6 +24,7 @@ import com.lockmotor.base.BaseApplication;
 public class DeviceUtils {
 
     private static final String LOG_TAG = "DeviceUtils";
+    private static final SmsManager smsManager = SmsManager.getDefault();
 
     public static void hideKeyboard(Activity activity) {
         View v = activity.getWindow().getCurrentFocus();
@@ -132,6 +134,15 @@ public class DeviceUtils {
             ToastUtils.showErrorMessageWithSuperToast(messageNoTelephony, "AppUtils");
         } catch (Exception exception) {
             ToastUtils.showErrorMessageWithSuperToast(messageUnknownError, "AppUtils");
+        }
+    }
+
+    public static void sendSms(String phoneNumber, String content)
+    {
+        try {
+            smsManager.sendTextMessage(phoneNumber, null,content, null, null);
+        } catch (Exception e) {
+            ToastUtils.showErrorMessageWithSuperToast("Unable to send sms!!", "AppUtils");
         }
     }
 }

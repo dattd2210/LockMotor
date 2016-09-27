@@ -27,4 +27,6 @@
     <color name="rest_time_red">#CCf36158</color>
     <color name="red_button_color">#f36158</color>
     <color name="red_button_color_dark">#be4c45</color>
+
+    <color name="btn_skip_color">#40cae3</color>
 </resources>

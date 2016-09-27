@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.PhoneStateListener;
-import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,14 +15,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lockmotor.R;
+import com.lockmotor.base.utils.DeviceUtils;
 import com.lockmotor.global.GlobalConstant;
 
 /**
  * Created by trandinhdat on 8/9/16.
  */
 public class HomeViewModel {
-
-    private SmsManager smsManager;
     private Activity context;
 
     //----------------------------------------------------------------------------------------------
@@ -33,10 +31,6 @@ public class HomeViewModel {
 
     public HomeViewModel(Activity context) {
         this.context = context;
-    }
-
-    public void setSmsManager(SmsManager smsManager) {
-        this.smsManager = smsManager;
     }
 
     //----------------------------------------------------------------------------------------------
@@ -124,12 +118,7 @@ public class HomeViewModel {
      */
     public void findLocation(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            try {
-                smsManager.sendTextMessage(GlobalConstant.DEVICE_PHONE_NUMBER, null,
-                        GlobalConstant.CONTENT_FIND_LOCATION, null, null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_FIND_LOCATION);
         }
     }
 
@@ -140,12 +129,8 @@ public class HomeViewModel {
      */
     public void findMyBike(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            try {
-                smsManager.sendTextMessage(GlobalConstant.DEVICE_PHONE_NUMBER, null,
-                        GlobalConstant.CONTENT_FIND_MY_BIKE, null, null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_FIND_MY_BIKE);
         }
     }
 
@@ -155,31 +140,11 @@ public class HomeViewModel {
      *
      * @param event user event
      */
-    public void turnOffAntiThief(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            try {
-                smsManager.sendTextMessage(GlobalConstant.DEVICE_PHONE_NUMBER, null,
-                        GlobalConstant.CONTENT_UNLOCK, null, null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * TODO receive data from server
-     * Send message to device to turn on anti thief, show noti to user after sent
-     *
-     * @param event user event
-     */
-    public void turnOnAntiThief(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            try {
-                smsManager.sendTextMessage(GlobalConstant.DEVICE_PHONE_NUMBER, null,
-                        GlobalConstant.CONTENT_LOCK, null, null);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    public void toggleAntiThief(MotionEvent event, boolean isOn) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN && !isOn) {
+            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_UNLOCK);
+        }else {
+            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_LOCK);
         }
     }
 

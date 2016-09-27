@@ -4,18 +4,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.telephony.SmsManager;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.view.RxView;
 import com.lockmotor.R;
+import com.lockmotor.base.utils.DeviceUtils;
 import com.lockmotor.global.GlobalConstant;
 import com.lockmotor.global.dagger.DIComponent;
 import com.lockmotor.implement.LockMotorActivity;
@@ -31,13 +30,12 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Tran Dinh Dat on 3/26/2016.
  */
-public class HomeActivity extends LockMotorActivity implements ConfigDialog.EventHandler {
+public class HomeActivity extends LockMotorActivity implements ConfigDialog.EventHandler
+{
 
     //Environment variables
     @Inject
     SharedPreferences sharedPreferences;
-    @Inject
-    SmsManager smsManager;
 
     //Init View
     @BindView(R.id.btn_turn_off_engine1)
@@ -81,7 +79,6 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
 
     final private CompositeSubscription subscriptions = new CompositeSubscription();
     private boolean isTurnOnAntiThief = true;
-    private boolean isConfigDone = false;
 
 
     @Override
@@ -99,13 +96,6 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         super.onCreate(savedInstanceState);
 
         viewModel = new HomeViewModel(this);
-        viewModel.setSmsManager(smsManager);
-
-        //Check for first set up
-        setupConfigInfo();
-
-        //set up rx java event
-        initSubscription();
     }
 
     @Override
@@ -117,13 +107,28 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
     }
 
     @Override
-    public void onBackPressed() {
+    protected void onResume() {
+        super.onResume();
+        //set up rx java event
+        initSubscription();
+
+        //Check for first set up
+        setupConfigInfo();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        subscriptions.clear();
     }
 
     //----------------------------------------------------------------------------------------------
     //Function
     //----------------------------------------------------------------------------------------------
     private void showConfigDialog() {
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+
+        //config device number and password
         configDialog = new ConfigDialog(this);
         configDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         configDialog.setContentView(R.layout.dialog_config);
@@ -135,6 +140,10 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
                 return keyCode == KeyEvent.KEYCODE_BACK;
             }
         });
+        lp.copyFrom(configDialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        configDialog.getWindow().setAttributes(lp);
+        configDialog.setCanceledOnTouchOutside(false);
         configDialog.show();
     }
 
@@ -149,7 +158,6 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             GlobalConstant.PASSWORD =
                     GlobalConstant.decryptPassword(sharedPreferences.getString(GlobalConstant.PASSWORD_KEY, ""),
                             sharedPreferences.getInt(GlobalConstant.PASSWORD_LENGTH_KEY, 0));
-            isConfigDone = true;
         }
 
     }
@@ -160,6 +168,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             @Override
             public void call(MotionEvent motionEvent) {
                 viewModel.updateViewAfterClick(iv_turn_off_engine, motionEvent);
+                viewModel.turnOffEngine(motionEvent);
             }
         }));
 
@@ -167,6 +176,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             @Override
             public void call(MotionEvent motionEvent) {
                 viewModel.updateViewAfterClick(iv_turn_off_engine, motionEvent);
+                viewModel.turnOffEngine(motionEvent);
             }
         }));
 
@@ -176,6 +186,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             @Override
             public void call(MotionEvent motionEvent) {
                 viewModel.updateViewAfterClick(iv_find_location, motionEvent);
+                viewModel.findLocation(motionEvent);
             }
         }));
 
@@ -183,6 +194,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             @Override
             public void call(MotionEvent motionEvent) {
                 viewModel.updateViewAfterClick(iv_find_location, motionEvent);
+                viewModel.findLocation(motionEvent);
             }
         }));
 
@@ -192,6 +204,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             @Override
             public void call(MotionEvent motionEvent) {
                 viewModel.updateViewAfterClick(iv_find_my_bike, motionEvent);
+                viewModel.findMyBike(motionEvent);
             }
         }));
 
@@ -199,6 +212,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             @Override
             public void call(MotionEvent motionEvent) {
                 viewModel.updateViewAfterClick(iv_find_my_bike, motionEvent);
+                viewModel.findMyBike(motionEvent);
             }
         }));
 
@@ -209,6 +223,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             public void call(MotionEvent motionEvent) {
                 isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
                         tv_anti_thief, motionEvent, isTurnOnAntiThief);
+                viewModel.toggleAntiThief(motionEvent,isTurnOnAntiThief);
             }
         }));
 
@@ -217,6 +232,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             public void call(MotionEvent motionEvent) {
                 isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
                         tv_anti_thief, motionEvent, isTurnOnAntiThief);
+                viewModel.toggleAntiThief(motionEvent,isTurnOnAntiThief);
             }
         }));
 
@@ -226,6 +242,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             public void call(Void aVoid) {
                 Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.acitivity_in_from_right_to_left,R.anim.hold);
             }
         }));
     }
@@ -234,20 +251,41 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
     //Event for config device number dialog
     //----------------------------------------------------------------------------------------------
     @Override
-    public void btnQuitClicked(@NonNull View view) {
+    public void btnQuitClicked() {
         this.finish();
     }
 
     @Override
-    public void btnDoneClicked(@NonNull View view) {
-        //TODO send sms to device
+    public void btnDoneClicked() {
+        //Save to Preferences
         sharedPreferences.edit().putString(GlobalConstant.DEVICE_PHONE_NUMBER_KEY,
                 configDialog.getDeviceNumber()).apply();
         sharedPreferences.edit().putString(GlobalConstant.PASSWORD_KEY,
                 GlobalConstant.encryptPassword(configDialog.getPassword())).apply();
         sharedPreferences.edit().putInt(GlobalConstant.PASSWORD_LENGTH_KEY,
                 configDialog.getPassword().length()).apply();
+
+        //Set data to globalConstant thus we can reuse it later
+        GlobalConstant.DEVICE_PHONE_NUMBER = configDialog.getDeviceNumber();
+        GlobalConstant.PASSWORD = GlobalConstant.encryptPassword(configDialog.getPassword());
+        GlobalConstant.PASSWORD_LENGTH = configDialog.getPassword().length();
+
+        //Send data to device
+        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_UPDATE_PHONE +" "+ configDialog.getPhoneNumber());
+        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_UPDATE_FINGER);
+
         configDialog.hide();
         configDialog.dismiss();
+
+        //show config finger dialog
+        showFingerSetupLoadingDialog();
+        //TODO start service to lister on server
+    }
+
+    @Override
+    public void btnSkipClicked() {
+        configDialog.setCanSkip(false);
+        configDialog.showSkipButton();
+        configDialog.hide();
     }
 }

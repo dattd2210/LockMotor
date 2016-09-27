@@ -53,7 +53,7 @@
     <string name="tv_account_check_title">Thông tin tài khoản</string>
 
     <!--First Config-->
-    <string name="tv_config_title">Cài đặt ban đầu</string>
+    <string name="tv_config_title_1">Cài đặt ban đầu</string>
     <string name="et_device_number_hint">Số điện thoại trên thiết bị</string>
     <string name="et_phone_number_hint">Số điện thoại của bạn</string>
     <string name="btn_config_cancel">Thoát</string>
@@ -64,5 +64,7 @@
     <string name="tv_config_password_confirm_error">* Không trùng khớp</string>
     <string name="error_message_input">Hãy điền đầy đủ thông tin!!</string>
     <string name="tv_network_provider">Nhà mạng</string>
+    <string name="btn_config_next">Tiếp theo</string>
+    <string name="btn_skip">Bỏ qua</string>
 
 </resources>

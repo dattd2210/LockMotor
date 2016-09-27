@@ -15,9 +15,12 @@ public class GlobalConstant {
     public static final String CONTENT_FIND_LOCATION = "LOCATION";
     public static final String CONTENT_FIND_MY_BIKE = "FIND";
     public static final String CONTENT_UPDATE_PHONE = "SET_PHONE";
+    public static final String CONTENT_UPDATE_FINGER = "";
+    public static final String UNKNOW_NET_PROVIDER = "Chưa xác định";
 
     public static String DEVICE_PHONE_NUMBER = "";
     public static String PASSWORD = "";
+    public static int PASSWORD_LENGTH = 0;
 
     private static Random r = new Random();
 
