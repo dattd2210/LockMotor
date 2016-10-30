@@ -15,12 +15,22 @@ public class GlobalConstant {
     public static final String CONTENT_FIND_LOCATION = "LOCATION";
     public static final String CONTENT_FIND_MY_BIKE = "FIND";
     public static final String CONTENT_UPDATE_PHONE = "SET_PHONE";
-    public static final String CONTENT_UPDATE_FINGER = "";
+    public static final String CONTENT_UPDATE_FINGER = "SET_FINGER";
     public static final String UNKNOW_NET_PROVIDER = "Chưa xác định";
+
+    //Request permission code
+    public static final int REQUEST_PERMISSION_CODE = 1;
+
+    //Recharge content
+    public static final String RECHARGE_VIETEL = "*100*";
+
+    //Account check content
+    public static final String CHECK_ACCOUNT_VIETEL = "*101#";
 
     public static String DEVICE_PHONE_NUMBER = "";
     public static String PASSWORD = "";
     public static int PASSWORD_LENGTH = 0;
+    public static boolean HAS_OPEN_SETTING = false;
 
     private static Random r = new Random();
 

@@ -7,8 +7,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.github.johnpersano.supertoasts.SuperToast;
+import com.github.johnpersano.supertoasts.util.Style;
 import com.jakewharton.rxbinding.view.RxView;
 import com.lockmotor.R;
+import com.lockmotor.base.utils.DeviceUtils;
+import com.lockmotor.global.GlobalConstant;
 import com.lockmotor.global.dagger.DIComponent;
 import com.lockmotor.implement.LockMotorActivity;
 
@@ -59,6 +63,7 @@ public class SettingActivity extends LockMotorActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        GlobalConstant.HAS_OPEN_SETTING = true;
         initDialog();
         initSubscription();
     }
@@ -80,6 +85,9 @@ public class SettingActivity extends LockMotorActivity {
     //Function
     //----------------------------------------------------------------------------------------------
     private void initSubscription() {
+        //clear subscriptions to ensure action won't duplicate
+        subscriptions.clear();
+
         subscriptions.add(RxView.clicks(iv_back_press)
                 .subscribe(new Action1<Void>() {
                     @Override
@@ -93,8 +101,16 @@ public class SettingActivity extends LockMotorActivity {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        //TODO send sms to device and wait to respond
-                        //TODO loading show up
+                        if(GlobalConstant.DEVICE_PHONE_NUMBER == "")
+                        {
+                            SuperToast.create(SettingActivity.this,
+                                    getResources().getString(R.string.error_message_lack_config),
+                                    SuperToast.Duration.SHORT,
+                                    Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                        }else {
+                            //TODO check for net provide and send correspond message
+                            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CHECK_ACCOUNT_VIETEL);
+                        }
                     }
                 }));
 

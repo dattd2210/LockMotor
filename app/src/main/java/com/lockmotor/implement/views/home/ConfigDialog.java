@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.github.johnpersano.supertoasts.SuperToast;
 import com.github.johnpersano.supertoasts.util.Style;
@@ -39,6 +40,8 @@ public class ConfigDialog extends Dialog {
     EditText et_config_phone_number;
     @BindView(R.id.btn_skip)
     Button btn_skip;
+    @BindView(R.id.tv_config_title)
+    TextView tv_config_title;
 
     @BindView(R.id.sn_config_network_provider_1)
     Spinner sn_config_network_provider_1;
@@ -47,7 +50,7 @@ public class ConfigDialog extends Dialog {
 
     private EventHandler listener;
     private final CompositeSubscription compositeSubscription = new CompositeSubscription();
-    private boolean canSkip = true;
+    private static boolean canSkip = true;
 
     public ConfigDialog(Context context) {
         super(context);
@@ -102,16 +105,21 @@ public class ConfigDialog extends Dialog {
 
     public void showSkipButton()
     {
-        if(canSkip) {
+//        if(canSkip || !GlobalConstant.HAS_OPEN_SETTING) {
             btn_skip.setVisibility(View.VISIBLE);
-        }
-        else {
-            btn_skip.setVisibility(View.GONE);
-        }
+//        }
+//        else {
+//            btn_skip.setVisibility(View.GONE);
+//            tv_config_title.setGravity(Gravity.CENTER);
+//        }
     }
 
     public void setCanSkip(boolean canSkip) {
         this.canSkip = canSkip;
+    }
+
+    public static boolean isCanSkip() {
+        return canSkip;
     }
 
     private void showError() {

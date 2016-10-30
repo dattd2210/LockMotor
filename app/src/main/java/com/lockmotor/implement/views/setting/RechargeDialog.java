@@ -5,8 +5,12 @@ import android.content.Context;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.github.johnpersano.supertoasts.SuperToast;
+import com.github.johnpersano.supertoasts.util.Style;
 import com.jakewharton.rxbinding.view.RxView;
 import com.lockmotor.R;
+import com.lockmotor.base.utils.DeviceUtils;
+import com.lockmotor.global.GlobalConstant;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,6 +67,23 @@ public class RechargeDialog extends Dialog {
         .subscribe(new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
+                if(GlobalConstant.DEVICE_PHONE_NUMBER == "")
+                {
+                    SuperToast.create(getContext(),
+                            getContext().getResources().getString(R.string.error_message_lack_config),
+                            SuperToast.Duration.SHORT,
+                            Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                    return;
+                }
+
+                if(et_num_card.getText().toString().equals("")){
+                    SuperToast.create(getContext(),
+                            getContext().getResources().getString(R.string.error_message_lack_card_number),
+                            SuperToast.Duration.SHORT,
+                            Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                    return;
+                }
+
                 sendRequest();
                 dismiss();
             }
@@ -71,6 +92,7 @@ public class RechargeDialog extends Dialog {
 
     private void sendRequest()
     {
-        //TODO send request and listen server
+        //TODO listen server
+        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.RECHARGE_VIETEL+et_num_card);
     }
 }

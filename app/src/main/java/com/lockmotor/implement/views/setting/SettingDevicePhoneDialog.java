@@ -4,8 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.widget.Button;
 
+import com.github.johnpersano.supertoasts.SuperToast;
+import com.github.johnpersano.supertoasts.util.Style;
 import com.jakewharton.rxbinding.view.RxView;
 import com.lockmotor.R;
+import com.lockmotor.global.GlobalConstant;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,6 +65,15 @@ public class SettingDevicePhoneDialog extends Dialog {
         .subscribe(new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
+                if(GlobalConstant.DEVICE_PHONE_NUMBER == "")
+                {
+                    SuperToast.create(getContext(),
+                            getContext().getResources().getString(R.string.error_message_lack_config),
+                            SuperToast.Duration.SHORT,
+                            Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                    return;
+                }
+
                 sendRequest();
                 dismiss();
             }
@@ -71,5 +83,6 @@ public class SettingDevicePhoneDialog extends Dialog {
     private void sendRequest()
     {
         //// TODO: 8/28/16 send request and listen to server
+
     }
 }

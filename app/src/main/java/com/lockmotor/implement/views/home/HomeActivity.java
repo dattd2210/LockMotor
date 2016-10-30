@@ -1,9 +1,13 @@
 package com.lockmotor.implement.views.home;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Window;
@@ -12,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.johnpersano.supertoasts.SuperToast;
+import com.github.johnpersano.supertoasts.util.Style;
 import com.jakewharton.rxbinding.view.RxView;
 import com.lockmotor.R;
 import com.lockmotor.base.utils.DeviceUtils;
@@ -20,6 +26,8 @@ import com.lockmotor.global.dagger.DIComponent;
 import com.lockmotor.implement.LockMotorActivity;
 import com.lockmotor.implement.viewModels.HomeViewModel;
 import com.lockmotor.implement.views.setting.SettingActivity;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
@@ -30,8 +38,7 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by Tran Dinh Dat on 3/26/2016.
  */
-public class HomeActivity extends LockMotorActivity implements ConfigDialog.EventHandler
-{
+public class HomeActivity extends LockMotorActivity implements ConfigDialog.EventHandler {
 
     //Environment variables
     @Inject
@@ -73,6 +80,10 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
     @BindView(R.id.iv_setting_press)
     ImageView iv_setting;
 
+    //TODO delete
+    @BindView(R.id.btn_delete)
+    Button btn_delete;
+
     //Local variables
     private HomeViewModel viewModel;
     private ConfigDialog configDialog;
@@ -96,6 +107,31 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         super.onCreate(savedInstanceState);
 
         viewModel = new HomeViewModel(this);
+        requestPermission();
+    }
+
+    private void requestPermission() {
+        //Call phone permission
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                        != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE,
+                            Manifest.permission.READ_PHONE_STATE,
+                            Manifest.permission.SEND_SMS},
+                    GlobalConstant.REQUEST_PERMISSION_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if (grantResults.length == 0) {
+            this.finish();
+        }
     }
 
     @Override
@@ -103,7 +139,10 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         super.onDestroy();
         subscriptions.clear();
         subscriptions.unsubscribe();
-        configDialog.dismiss();
+
+        if (configDialog != null) {
+            configDialog.dismiss();
+        }
     }
 
     @Override
@@ -126,6 +165,10 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
     //Function
     //----------------------------------------------------------------------------------------------
     private void showConfigDialog() {
+        if(configDialog != null) {
+            configDialog.show();
+            return;
+        }
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 
         //config device number and password
@@ -144,6 +187,12 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         configDialog.getWindow().setAttributes(lp);
         configDialog.setCanceledOnTouchOutside(false);
+        configDialog.showSkipButton();
+
+        if (!configDialog.isCanSkip()) {
+            configDialog.showSkipButton();
+        }
+
         configDialog.show();
     }
 
@@ -163,20 +212,38 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
     }
 
     private void initSubscription() {
+        subscriptions.clear();
         //Button turn off engine cheat
         subscriptions.add(RxView.touches(btn_turn_off_engine1).subscribe(new Action1<MotionEvent>() {
             @Override
             public void call(MotionEvent motionEvent) {
-                viewModel.updateViewAfterClick(iv_turn_off_engine, motionEvent);
-                viewModel.turnOffEngine(motionEvent);
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (checkConditionConfig()) {
+                        viewModel.updateViewAfterClick(iv_turn_off_engine, motionEvent);
+                        viewModel.turnOffEngine(motionEvent);
+                    }
+                }
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    viewModel.updateViewAfterClick(iv_turn_off_engine, motionEvent);
+                }
+
             }
         }));
 
         subscriptions.add(RxView.touches(btn_turn_off_engine2).subscribe(new Action1<MotionEvent>() {
             @Override
             public void call(MotionEvent motionEvent) {
-                viewModel.updateViewAfterClick(iv_turn_off_engine, motionEvent);
-                viewModel.turnOffEngine(motionEvent);
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (checkConditionConfig()) {
+                        viewModel.updateViewAfterClick(iv_turn_off_engine, motionEvent);
+                        viewModel.turnOffEngine(motionEvent);
+                    }
+                }
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    viewModel.updateViewAfterClick(iv_turn_off_engine, motionEvent);
+                }
             }
         }));
 
@@ -185,16 +252,32 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         subscriptions.add(RxView.touches(btn_find_location1).subscribe(new Action1<MotionEvent>() {
             @Override
             public void call(MotionEvent motionEvent) {
-                viewModel.updateViewAfterClick(iv_find_location, motionEvent);
-                viewModel.findLocation(motionEvent);
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (checkConditionConfig()) {
+                        viewModel.updateViewAfterClick(iv_find_location, motionEvent);
+                        viewModel.findLocation(motionEvent);
+                    }
+                }
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    viewModel.updateViewAfterClick(iv_find_location, motionEvent);
+                }
             }
         }));
 
         subscriptions.add(RxView.touches(btn_find_location2).subscribe(new Action1<MotionEvent>() {
             @Override
             public void call(MotionEvent motionEvent) {
-                viewModel.updateViewAfterClick(iv_find_location, motionEvent);
-                viewModel.findLocation(motionEvent);
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (checkConditionConfig()) {
+                        viewModel.updateViewAfterClick(iv_find_location, motionEvent);
+                        viewModel.findLocation(motionEvent);
+                    }
+                }
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    viewModel.updateViewAfterClick(iv_find_location, motionEvent);
+                }
             }
         }));
 
@@ -203,16 +286,32 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         subscriptions.add(RxView.touches(btn_find_my_bike1).subscribe(new Action1<MotionEvent>() {
             @Override
             public void call(MotionEvent motionEvent) {
-                viewModel.updateViewAfterClick(iv_find_my_bike, motionEvent);
-                viewModel.findMyBike(motionEvent);
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (checkConditionConfig()) {
+                        viewModel.updateViewAfterClick(iv_find_my_bike, motionEvent);
+                        viewModel.findMyBike(motionEvent);
+                    }
+                }
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    viewModel.updateViewAfterClick(iv_find_my_bike, motionEvent);
+                }
             }
         }));
 
         subscriptions.add(RxView.touches(btn_find_my_bike2).subscribe(new Action1<MotionEvent>() {
             @Override
             public void call(MotionEvent motionEvent) {
-                viewModel.updateViewAfterClick(iv_find_my_bike, motionEvent);
-                viewModel.findMyBike(motionEvent);
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (checkConditionConfig()) {
+                        viewModel.updateViewAfterClick(iv_find_my_bike, motionEvent);
+                        viewModel.findMyBike(motionEvent);
+                    }
+                }
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    viewModel.updateViewAfterClick(iv_find_my_bike, motionEvent);
+                }
             }
         }));
 
@@ -221,18 +320,36 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         subscriptions.add(RxView.touches(btn_anti_thief1).subscribe(new Action1<MotionEvent>() {
             @Override
             public void call(MotionEvent motionEvent) {
-                isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
-                        tv_anti_thief, motionEvent, isTurnOnAntiThief);
-                viewModel.toggleAntiThief(motionEvent,isTurnOnAntiThief);
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (checkConditionConfig()) {
+                        isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
+                                tv_anti_thief, motionEvent, isTurnOnAntiThief);
+                        viewModel.toggleAntiThief(motionEvent, isTurnOnAntiThief);
+                    }
+                }
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
+                            tv_anti_thief, motionEvent, isTurnOnAntiThief);
+                }
             }
         }));
 
         subscriptions.add(RxView.touches(btn_anti_thief2).subscribe(new Action1<MotionEvent>() {
             @Override
             public void call(MotionEvent motionEvent) {
-                isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
-                        tv_anti_thief, motionEvent, isTurnOnAntiThief);
-                viewModel.toggleAntiThief(motionEvent,isTurnOnAntiThief);
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    if (checkConditionConfig()) {
+                        isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
+                                tv_anti_thief, motionEvent, isTurnOnAntiThief);
+                        viewModel.toggleAntiThief(motionEvent, isTurnOnAntiThief);
+                    }
+                }
+
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
+                            tv_anti_thief, motionEvent, isTurnOnAntiThief);
+                }
             }
         }));
 
@@ -242,9 +359,29 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
             public void call(Void aVoid) {
                 Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
                 startActivity(intent);
-                overridePendingTransition(R.anim.acitivity_in_from_right_to_left,R.anim.hold);
+                overridePendingTransition(R.anim.acitivity_in_from_right_to_left, R.anim.hold);
             }
         }));
+
+        //TODO delete
+        subscriptions.add(RxView.clicks(btn_delete).subscribe(new Action1<Void>() {
+            @Override
+            public void call(Void aVoid) {
+                BtnDeleteClick();
+            }
+        }));
+    }
+
+    private boolean checkConditionConfig() {
+        if (GlobalConstant.DEVICE_PHONE_NUMBER.equals("")) {
+            SuperToast.create(HomeActivity.this,
+                    getResources().getString(R.string.error_message_lack_config),
+                    SuperToast.Duration.SHORT,
+                    Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+            configDialog.show();
+            return false;
+        }
+        return true;
     }
 
     //----------------------------------------------------------------------------------------------
@@ -271,14 +408,14 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         GlobalConstant.PASSWORD_LENGTH = configDialog.getPassword().length();
 
         //Send data to device
-        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_UPDATE_PHONE +" "+ configDialog.getPhoneNumber());
-        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_UPDATE_FINGER);
+        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER, GlobalConstant.CONTENT_UPDATE_PHONE + " " + configDialog.getPhoneNumber());
+        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER, GlobalConstant.CONTENT_UPDATE_FINGER + " 0");
 
         configDialog.hide();
         configDialog.dismiss();
 
         //show config finger dialog
-        showFingerSetupLoadingDialog();
+//        showFingerSetupLoadingDialog();
         //TODO start service to lister on server
     }
 
@@ -287,5 +424,18 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         configDialog.setCanSkip(false);
         configDialog.showSkipButton();
         configDialog.hide();
+    }
+
+
+    //TODO delete
+    public void BtnDeleteClick() {
+        File deletePrefFile = new File("/data/user/0/com.trandat.lockmotor/shared_prefs/SHARE_PREFERENCES_NAME.xml.bak");
+        deletePrefFile.delete();
+        File deletePrefFile2 = new File("/data/user/0/com.trandat.lockmotor/shared_prefs/SHARE_PREFERENCES_NAME.xml");
+        deletePrefFile2.delete();
+
+        GlobalConstant.DEVICE_PHONE_NUMBER = "";
+        GlobalConstant.PASSWORD = "";
+        GlobalConstant.PASSWORD_LENGTH = 0;
     }
 }

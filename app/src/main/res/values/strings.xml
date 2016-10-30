@@ -17,6 +17,9 @@
     <string name="btn_change_password">Thay đổi mật khẩu</string>
     <string name="btn_help">Hướng dẫn</string>
 
+    <string name="error_message_lack_config">Cài đặt trước khi thao tác!</string>
+    <string name="error_message_lack_card_number">Điền mã số thẻ trước khi thao tác!</string>
+
     <!--Account Recharge Dialog-->
     <string name="tv_recharge_title">Nạp tài khoản</string>
     <string name="tv_num_card">Số thẻ cào</string>
@@ -35,7 +38,7 @@
 
     <!--Phone Number Dialog-->
     <string name="tv_phone_number_title">Cài đặt số điện thoại</string>
-    <string name="tv_phone_number">Số điện thoại</string>
+    <string name="tv_phone_number">Số điện thoại thiết bị</string>
     <string name="sn_phone_number_type_smartphone">Số điện thoại trên smartphone</string>
     <string name="sn_phone_number_type_device">Số điện thoại trên thiết bị chống trộm</string>
 
@@ -56,7 +59,7 @@
     <string name="tv_config_title_1">Cài đặt ban đầu</string>
     <string name="et_device_number_hint">Số điện thoại trên thiết bị</string>
     <string name="et_phone_number_hint">Số điện thoại của bạn</string>
-    <string name="btn_config_cancel">Thoát</string>
+    <string name="btn_config_cancel">Thoát App</string>
     <string name="tv_config_password_password">Mật khẩu</string>
     <string name="et_password_hint">Mật khẩu (phải lớn hơn 6 ký tự)</string>
     <string name="tv_config_password_confirm">Nhập lại mật khẩu</string>

@@ -129,7 +129,6 @@ public class HomeViewModel {
      */
     public void findMyBike(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
             DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_FIND_MY_BIKE);
         }
     }
