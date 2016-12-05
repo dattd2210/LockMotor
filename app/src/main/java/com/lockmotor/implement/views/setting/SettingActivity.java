@@ -2,6 +2,7 @@ package com.lockmotor.implement.views.setting;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -13,21 +14,29 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.lockmotor.R;
 import com.lockmotor.base.utils.DeviceUtils;
 import com.lockmotor.global.GlobalConstant;
+import com.lockmotor.global.LockMotorAPI;
 import com.lockmotor.global.dagger.DIComponent;
 import com.lockmotor.implement.LockMotorActivity;
+import com.lockmotor.implement.models.InfoRequest;
+import com.lockmotor.implement.models.InfoResponse;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by trandinhdat on 8/13/16.
  */
-public class SettingActivity extends LockMotorActivity {
+public class SettingActivity extends LockMotorActivity implements RechargeDialog.RechargeDialogListener {
     @Inject
     SharedPreferences sharedPreferences;
+    @Inject
+    LockMotorAPI service;
 
     @BindView(R.id.iv_back_press)
     ImageView iv_back_press;
@@ -49,6 +58,7 @@ public class SettingActivity extends LockMotorActivity {
     private SettingFingerDialog settingFingerDialog;
     private SettingDevicePhoneDialog settingDevicePhoneDialog;
     private ChangePasswordDialog changePasswordDialog;
+    private int count = 0;
 
     @Override
     protected void injectComponent(DIComponent component) {
@@ -108,8 +118,8 @@ public class SettingActivity extends LockMotorActivity {
                                     SuperToast.Duration.SHORT,
                                     Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
                         }else {
-                            //TODO check for net provide and send correspond message
-                            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CHECK_ACCOUNT_VIETEL);
+                            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CHECK_ACCOUNT_STRING);
+                            callAPICheckAccount(GlobalConstant.CHECK_ACCOUNT_ID);
                         }
                     }
                 }));
@@ -150,7 +160,7 @@ public class SettingActivity extends LockMotorActivity {
     private void initDialog() {
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
 
-        rechargeDialog = new RechargeDialog(this);
+        rechargeDialog = new RechargeDialog(this,this);
         rechargeDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         rechargeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         rechargeDialog.setContentView(R.layout.dialog_account_recharge);
@@ -181,5 +191,69 @@ public class SettingActivity extends LockMotorActivity {
         lp.copyFrom(changePasswordDialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         changePasswordDialog.getWindow().setAttributes(lp);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    //Call API part
+    //----------------------------------------------------------------------------------------------
+    void callAPICheckAccount(final int id){
+        showLoadingDialog();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //TODO replace teet1 with phone number
+                InfoRequest param = new InfoRequest("teet1");
+                Call<InfoResponse> call = service.getInfo(param);
+                call.enqueue(new Callback<InfoResponse>() {
+                    @Override
+                    public void onResponse(Call<InfoResponse> call, Response<InfoResponse> response) {
+                        if (!response.body().getMessage().equals("")) {
+                            handler.removeCallbacksAndMessages(null);
+                            dismissLoadingDialog();
+                            count = 0;
+                            switch (id){
+                                case GlobalConstant.CHECK_ACCOUNT_ID:
+                                    //TODO display UI to user
+                                    break;
+                                default:
+                                    showConfirmDialog(true);
+                                    break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<InfoResponse> call, Throwable t) {
+
+                    }
+                });
+                if (isReachMaxWaitingTime()) {
+                    handler.removeCallbacksAndMessages(null);
+                } else {
+                    handler.postDelayed(this, GlobalConstant.AUTO_CALL_API_TIME);
+                }
+            }
+        }, GlobalConstant.AUTO_CALL_API_TIME);
+    }
+
+    private boolean isReachMaxWaitingTime() {
+        count++;
+        if (count >= GlobalConstant.MAX_WAITING_TIME / GlobalConstant.AUTO_CALL_API_TIME) {
+            dismissLoadingDialog();
+            count = 0;
+            showConfirmDialog(false);
+            return true;
+        }
+        return false;
+    }
+
+    //----------------------------------------------------------------------------------------------
+    //Implement listener
+    //----------------------------------------------------------------------------------------------
+
+    @Override
+    public void rechargeBtnOKClick() {
+        callAPICheckAccount(GlobalConstant.RECHARGE_ACCOUNT_ID);
     }
 }

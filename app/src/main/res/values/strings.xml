@@ -8,6 +8,10 @@
     <string name="tv_find_my_bike">Tìm xe\ntrong bãi</string>
     <string name="tv_find_location">Tìm\nvị trí xe</string>
 
+    <!--Password input dialog-->
+    <string name="tv_password_input">Nhập mật khẩu</string>
+    <string name="tv_password_input_hint">Nhập mật khẩu của bạn</string>
+
     <!--Setting Screen-->
     <string name="tv_setting_toolbar_title">Cài đặt</string>
     <string name="btn_account_recharge">Nạp tài khoản</string>
@@ -19,6 +23,8 @@
 
     <string name="error_message_lack_config">Cài đặt trước khi thao tác!</string>
     <string name="error_message_lack_card_number">Điền mã số thẻ trước khi thao tác!</string>
+    <string name="error_message_lack_phone_number">Nhập số điện thoại trước khi thao tác!</string>
+    <string name="error_message_wrong_password">Vui lòng nhập đúng mật khẩu!</string>
 
     <!--Account Recharge Dialog-->
     <string name="tv_recharge_title">Nạp tài khoản</string>
@@ -61,7 +67,7 @@
     <string name="et_phone_number_hint">Số điện thoại của bạn</string>
     <string name="btn_config_cancel">Thoát App</string>
     <string name="tv_config_password_password">Mật khẩu</string>
-    <string name="et_password_hint">Mật khẩu (phải lớn hơn 6 ký tự)</string>
+    <string name="et_password_hint">Mật khẩu (lớn hơn 6 ký tự)</string>
     <string name="tv_config_password_confirm">Nhập lại mật khẩu</string>
     <string name="btn_config_done">Hoàn thành</string>
     <string name="tv_config_password_confirm_error">* Không trùng khớp</string>

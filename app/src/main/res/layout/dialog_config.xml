@@ -18,9 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:paddingLeft="@dimen/large_space"
             android:text="@string/tv_config_title_1"
             android:textAlignment="gravity"
-            android:paddingLeft="@dimen/large_space"
             android:textColor="@color/bright_color"
             android:textSize="@dimen/font_20_sp" />
 
@@ -144,7 +144,8 @@
         style="@style/et_bright_18"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/tv_config_password_confirm"
+        android:layout_below="@+id/tv_config_password_confirm"
+        android:layout_marginTop="12dp"
         android:hint="@string/tv_config_password_confirm"
         android:inputType="textPassword"
         android:maxLength="30"

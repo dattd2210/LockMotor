@@ -60,13 +60,12 @@ public class HomeViewModel {
      * @param iv_main           button lozenge
      * @param iv_icon           icon on button
      * @param textView          textview on button
-     * @param event             user event
      * @param isTurnOnAntiThief check if anti thief turn on
      * @return change state of anti thief
      */
     public boolean updateAntiThiefView(ImageView iv_main, ImageView iv_icon, TextView textView,
-                                       MotionEvent event, boolean isTurnOnAntiThief) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                                       boolean isTurnOnAntiThief) {
+//        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             if (isTurnOnAntiThief) {
                 isTurnOnAntiThief = false;
                 iv_main.setImageResource(R.mipmap.ic_btn_normal);
@@ -78,7 +77,7 @@ public class HomeViewModel {
                 iv_icon.setImageResource(R.mipmap.ic_turn_off_anti_thief);
                 textView.setText(R.string.tv_turn_off_anti_thief);
             }
-        }
+//        }
 
         return isTurnOnAntiThief;
     }
@@ -137,10 +136,18 @@ public class HomeViewModel {
      * TODO receive data from server
      * Send message to device to turn off anti thief, show noti to user after sent
      *
-     * @param event user event
+     *
      */
-    public void toggleAntiThief(MotionEvent event, boolean isOn) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN && !isOn) {
+//    public void toggleAntiThief(MotionEvent event, boolean isOn) {
+//        if (event.getAction() == MotionEvent.ACTION_DOWN && !isOn) {
+//            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_UNLOCK);
+//        }else {
+//            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_LOCK);
+//        }
+//    }
+
+    public void toggleAntiThief(boolean isOn) {
+        if (!isOn) {
             DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_UNLOCK);
         }else {
             DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_LOCK);

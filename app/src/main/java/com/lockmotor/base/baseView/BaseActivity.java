@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,10 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.lockmotor.R;
-import com.lockmotor.base.utils.AnimationUtils;
 import com.lockmotor.base.utils.ToastUtils;
 
 import butterknife.BindView;
@@ -25,6 +26,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
     protected final String LOG_TAG = "BaseActivity";
     private Dialog mLoadingDialog;
+    private Dialog confirmDialog;
 
     @Nullable
     @BindView(R.id.progress)
@@ -158,15 +160,37 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         View v = LayoutInflater.from(this).inflate(R.layout.dialog_progress_wheel_layout, null);
         mLoadingDialog.setContentView(v);
         mLoadingDialog.setCancelable(false);
+
+        confirmDialog = new Dialog(this,R.style.CustomDialogLoading);
+        View confirmView = LayoutInflater.from(this).inflate(R.layout.dialog_confirmation,null);
+        confirmDialog.setContentView(confirmView);
+        confirmDialog.setCancelable(false);
     }
 
     @Override
     public void showLoadingDialog() {
         if (mLoadingDialog != null && !mLoadingDialog.isShowing()) {
             View loadingContent = mLoadingDialog.findViewById(R.id.loading_progress_container);
-            ImageView imgLoading = (ImageView) loadingContent.findViewById(R.id.iv_loading);
-            AnimationUtils.AnimationWheelInfinity(this, imgLoading);
             mLoadingDialog.show();
+        }
+    }
+
+    @Override
+    public void showConfirmDialog(boolean isSuccess) {
+        if (confirmDialog != null) {
+            View confirmContent = confirmDialog.findViewById(R.id.confirm_container);
+            ImageView iv_confirm_icon = (ImageView)((ViewGroup)confirmContent).getChildAt(0);
+            if(isSuccess) {
+                iv_confirm_icon.setImageDrawable(getResources().getDrawable(R.mipmap.ic_success));
+            }else {
+                iv_confirm_icon.setImageDrawable(getResources().getDrawable(R.mipmap.ic_error));
+            }
+            confirmDialog.show();
+            new Handler().postDelayed(new Runnable(){
+                public void run() {
+                    confirmDialog.hide();
+                }
+            },3000);
         }
     }
 

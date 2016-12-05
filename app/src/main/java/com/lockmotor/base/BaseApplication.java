@@ -213,7 +213,7 @@ public class BaseApplication extends Application implements
         }
 
         try {
-            //User BufferedWriter for good performance, 'true' to set append to file flag
+            //BufferedWriter for good performance, 'true' to set append to file flag
             BufferedWriter buf = new BufferedWriter(new FileWriter(logFile, true));
 
             buf.append(formatter.format(new Date()));

@@ -17,15 +17,22 @@ public class GlobalConstant {
     public static final String CONTENT_UPDATE_PHONE = "SET_PHONE";
     public static final String CONTENT_UPDATE_FINGER = "SET_FINGER";
     public static final String UNKNOW_NET_PROVIDER = "Chưa xác định";
+    public static final int AUTO_CALL_API_TIME = 5000;
+    public static final int MAX_WAITING_TIME = 15000;
+
+    public static final int CHECK_ACCOUNT_ID = 0;
+    public static final int RECHARGE_ACCOUNT_ID = 1;
+    public static final int FINGER_UPDATE_ID = 2;
+    public static final int PHONE_NUMBER_UPDATE_ID = 3;
 
     //Request permission code
     public static final int REQUEST_PERMISSION_CODE = 1;
 
     //Recharge content
-    public static final String RECHARGE_VIETEL = "*100*";
+    public static final String RECHARGE = "*100*";
 
     //Account check content
-    public static final String CHECK_ACCOUNT_VIETEL = "*101#";
+    public static final String CHECK_ACCOUNT_STRING = "*101#";
 
     public static String DEVICE_PHONE_NUMBER = "";
     public static String PASSWORD = "";
@@ -57,4 +64,15 @@ public class GlobalConstant {
         String alphabet = "0123456789qwertyuiopasdfghjkl:;'zxcvbnm,.<>/?[]{}`~!@#$%^&*()_-+=";
         return alphabet.charAt(r.nextInt(alphabet.length())) + "" + alphabet.charAt(r.nextInt(alphabet.length()));
     }
+
+//    public static final String getRechargeString(){
+//        switch (PhoneUtils.getNetProviderFromPhoneNumber(DEVICE_PHONE_NUMBER)){
+//            case 1: //VIETEL
+//                return RECHARGE_VIETEL;
+//            case 2: //MOBIFONE
+//                return
+//            default:
+//                return "";
+//        }
+//    }
 }

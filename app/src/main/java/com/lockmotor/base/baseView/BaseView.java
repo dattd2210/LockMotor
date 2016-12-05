@@ -32,4 +32,6 @@ public interface BaseView {
     void showToastMessageDelay(String message, int timeDelay);
 
     void showToastErrorMessage(String message);
+
+    void showConfirmDialog(boolean isSuccess);
 }

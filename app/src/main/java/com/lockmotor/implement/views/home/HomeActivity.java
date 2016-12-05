@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
@@ -22,9 +23,13 @@ import com.jakewharton.rxbinding.view.RxView;
 import com.lockmotor.R;
 import com.lockmotor.base.utils.DeviceUtils;
 import com.lockmotor.global.GlobalConstant;
+import com.lockmotor.global.LockMotorAPI;
 import com.lockmotor.global.dagger.DIComponent;
 import com.lockmotor.implement.LockMotorActivity;
+import com.lockmotor.implement.models.InfoRequest;
+import com.lockmotor.implement.models.InfoResponse;
 import com.lockmotor.implement.viewModels.HomeViewModel;
+import com.lockmotor.implement.views.setting.PasswordInputDialog;
 import com.lockmotor.implement.views.setting.SettingActivity;
 
 import java.io.File;
@@ -32,17 +37,22 @@ import java.io.File;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.functions.Action1;
 import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Tran Dinh Dat on 3/26/2016.
  */
-public class HomeActivity extends LockMotorActivity implements ConfigDialog.EventHandler {
+public class HomeActivity extends LockMotorActivity implements ConfigDialog.EventHandler, PasswordInputDialog.EventHandler {
 
     //Environment variables
     @Inject
     SharedPreferences sharedPreferences;
+    @Inject
+    LockMotorAPI service;
 
     //Init View
     @BindView(R.id.btn_turn_off_engine1)
@@ -87,6 +97,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
     //Local variables
     private HomeViewModel viewModel;
     private ConfigDialog configDialog;
+    private int count = 0;
 
     final private CompositeSubscription subscriptions = new CompositeSubscription();
     private boolean isTurnOnAntiThief = true;
@@ -165,7 +176,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
     //Function
     //----------------------------------------------------------------------------------------------
     private void showConfigDialog() {
-        if(configDialog != null) {
+        if (configDialog != null) {
             configDialog.show();
             return;
         }
@@ -204,9 +215,11 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         } else {
             GlobalConstant.DEVICE_PHONE_NUMBER =
                     sharedPreferences.getString(GlobalConstant.DEVICE_PHONE_NUMBER_KEY, "");
-            GlobalConstant.PASSWORD =
-                    GlobalConstant.decryptPassword(sharedPreferences.getString(GlobalConstant.PASSWORD_KEY, ""),
-                            sharedPreferences.getInt(GlobalConstant.PASSWORD_LENGTH_KEY, 0));
+            GlobalConstant.PASSWORD = sharedPreferences.getString(GlobalConstant.PASSWORD_KEY, "");
+            GlobalConstant.PASSWORD_LENGTH = sharedPreferences.getInt(GlobalConstant.PASSWORD_LENGTH_KEY, 0);
+//            GlobalConstant.PASSWORD =
+//                    GlobalConstant.decryptPassword(sharedPreferences.getString(GlobalConstant.PASSWORD_KEY, ""),
+//                            sharedPreferences.getInt(GlobalConstant.PASSWORD_LENGTH_KEY, 0));
         }
 
     }
@@ -323,14 +336,40 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     if (checkConditionConfig()) {
                         isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
-                                tv_anti_thief, motionEvent, isTurnOnAntiThief);
-                        viewModel.toggleAntiThief(motionEvent, isTurnOnAntiThief);
-                    }
-                }
+                                tv_anti_thief, isTurnOnAntiThief);
+                        viewModel.toggleAntiThief(isTurnOnAntiThief);
+                        showLoadingDialog();
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                //TODO replace teet1 with phone number
+                                InfoRequest param = new InfoRequest("teet1");
+                                Call<InfoResponse> call = service.getInfo(param);
+                                call.enqueue(new Callback<InfoResponse>() {
+                                    @Override
+                                    public void onResponse(Call<InfoResponse> call, Response<InfoResponse> response) {
+                                        if (!response.body().getMessage().equals("")) {
+                                            handler.removeCallbacksAndMessages(null);
+                                            dismissLoadingDialog();
+                                            count = 0;
+                                            showConfirmDialog(true);
+                                        }
+                                    }
 
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
-                            tv_anti_thief, motionEvent, isTurnOnAntiThief);
+                                    @Override
+                                    public void onFailure(Call<InfoResponse> call, Throwable t) {
+
+                                    }
+                                });
+                                if (isReachMaxWaitingTime()) {
+                                    handler.removeCallbacksAndMessages(null);
+                                } else {
+                                    handler.postDelayed(this, GlobalConstant.AUTO_CALL_API_TIME);
+                                }
+                            }
+                        }, GlobalConstant.AUTO_CALL_API_TIME);
+                    }
                 }
             }
         }));
@@ -341,14 +380,40 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     if (checkConditionConfig()) {
                         isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
-                                tv_anti_thief, motionEvent, isTurnOnAntiThief);
-                        viewModel.toggleAntiThief(motionEvent, isTurnOnAntiThief);
-                    }
-                }
+                                tv_anti_thief, isTurnOnAntiThief);
+                        viewModel.toggleAntiThief(isTurnOnAntiThief);
+                        showLoadingDialog();
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                //TODO replace teet1 with phone number
+                                InfoRequest param = new InfoRequest("teet1");
+                                Call<InfoResponse> call = service.getInfo(param);
+                                call.enqueue(new Callback<InfoResponse>() {
+                                    @Override
+                                    public void onResponse(Call<InfoResponse> call, Response<InfoResponse> response) {
+                                        if (!response.body().getMessage().equals("")) {
+                                            handler.removeCallbacksAndMessages(null);
+                                            dismissLoadingDialog();
+                                            count = 0;
+                                            showConfirmDialog(true);
+                                        }
+                                    }
 
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                    isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
-                            tv_anti_thief, motionEvent, isTurnOnAntiThief);
+                                    @Override
+                                    public void onFailure(Call<InfoResponse> call, Throwable t) {
+
+                                    }
+                                });
+                                if (isReachMaxWaitingTime()) {
+                                    handler.removeCallbacksAndMessages(null);
+                                } else {
+                                    handler.postDelayed(this, GlobalConstant.AUTO_CALL_API_TIME);
+                                }
+                            }
+                        }, GlobalConstant.AUTO_CALL_API_TIME);
+                    }
                 }
             }
         }));
@@ -357,9 +422,23 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         subscriptions.add(RxView.clicks(iv_setting).subscribe(new Action1<Void>() {
             @Override
             public void call(Void aVoid) {
-                Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.acitivity_in_from_right_to_left, R.anim.hold);
+
+                if (!GlobalConstant.PASSWORD.equals("")) {
+                    PasswordInputDialog passwordInputDialog;
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    passwordInputDialog = new PasswordInputDialog(HomeActivity.this, HomeActivity.this);
+                    passwordInputDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                    passwordInputDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    passwordInputDialog.setContentView(R.layout.dialog_password_input);
+                    lp.copyFrom(passwordInputDialog.getWindow().getAttributes());
+                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    passwordInputDialog.getWindow().setAttributes(lp);
+                    passwordInputDialog.show();
+                } else {
+                    Intent intent = new Intent(HomeActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.acitivity_in_from_right_to_left, R.anim.hold);
+                }
             }
         }));
 
@@ -384,8 +463,22 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         return true;
     }
 
+    private boolean isReachMaxWaitingTime() {
+        count++;
+        if (count >= GlobalConstant.MAX_WAITING_TIME / GlobalConstant.AUTO_CALL_API_TIME) {
+            isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
+                    tv_anti_thief, isTurnOnAntiThief);
+            viewModel.toggleAntiThief(isTurnOnAntiThief);
+            dismissLoadingDialog();
+            count = 0;
+            showConfirmDialog(false);
+            return true;
+        }
+        return false;
+    }
+
     //----------------------------------------------------------------------------------------------
-    //Event for config device number dialog
+    //Event for config dialog
     //----------------------------------------------------------------------------------------------
     @Override
     public void btnQuitClicked() {
@@ -417,6 +510,16 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         //show config finger dialog
 //        showFingerSetupLoadingDialog();
         //TODO start service to lister on server
+    }
+
+    //----------------------------------------------------------------------------------------------
+    //Event for password input dialog
+    //----------------------------------------------------------------------------------------------
+    @Override
+    public void passwordChecking() {
+        Intent intent = new Intent(this, SettingActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.acitivity_in_from_right_to_left, R.anim.hold);
     }
 
     @Override

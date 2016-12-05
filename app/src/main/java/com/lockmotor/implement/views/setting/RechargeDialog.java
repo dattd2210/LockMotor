@@ -29,9 +29,11 @@ public class RechargeDialog extends Dialog {
     EditText et_num_card;
 
     public static final CompositeSubscription subscriptions = new CompositeSubscription();
+    private RechargeDialogListener listener;
 
-    public RechargeDialog(Context context) {
+    public RechargeDialog(Context context,RechargeDialogListener listener) {
         super(context);
+        this.listener = listener;
     }
 
     @Override
@@ -92,7 +94,11 @@ public class RechargeDialog extends Dialog {
 
     private void sendRequest()
     {
-        //TODO listen server
-        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.RECHARGE_VIETEL+et_num_card);
+        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.RECHARGE+et_num_card+"#");
+        listener.rechargeBtnOKClick();
+    }
+
+    public interface RechargeDialogListener{
+        void rechargeBtnOKClick();
     }
 }

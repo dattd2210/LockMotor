@@ -48,4 +48,6 @@ dependencies {
     apt 'org.parceler:parceler:1.1.1'
     compile 'com.google.dagger:dagger:2.5'
     apt 'com.google.dagger:dagger-compiler:2.5'
+    compile 'com.github.ybq:Android-SpinKit:1.1.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
 }

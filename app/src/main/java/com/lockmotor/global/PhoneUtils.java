@@ -4,8 +4,16 @@ package com.lockmotor.global;
  * Created by trandinhdat on 9/9/16.
  */
 public class PhoneUtils {
-    public static int GetNetProviderFromPhoneNumber(String phoneNumberPre) {
-        switch (phoneNumberPre) {
+    public static int getNetProviderFromPhoneNumber(String phoneNumber) {
+        String phonePre = "";
+        if (phoneNumber.startsWith("09") || phoneNumber.startsWith("08")) {
+            phonePre = phoneNumber.substring(0, 3) + "x";
+        }
+        if (phoneNumber.startsWith("01")) {
+            phonePre = phoneNumber.substring(0, 4);
+        }
+
+        switch (phonePre) {
             case "096x":
             case "097x":
             case "098x":

@@ -167,15 +167,8 @@ public class ConfigDialog extends Dialog {
     }
 
     private void showNetProvider(Spinner sn, String phoneNumber) {
-        String phonePre = "";
         sn.setEnabled(true);
-        if (phoneNumber.startsWith("09") || phoneNumber.startsWith("08")) {
-            phonePre = phoneNumber.substring(0, 3) + "x";
-        }
-        if (phoneNumber.startsWith("01")) {
-            phonePre = phoneNumber.substring(0, 4);
-        }
-        sn.setSelection(PhoneUtils.GetNetProviderFromPhoneNumber(phonePre), true);
+        sn.setSelection(PhoneUtils.getNetProviderFromPhoneNumber(phoneNumber), true);
     }
 
     private void initSubscription() {
