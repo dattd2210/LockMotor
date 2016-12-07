@@ -38,25 +38,13 @@
         android:layout_below="@id/phone_number_toolbar"
         android:text="@string/tv_network_provider" />
 
-    <EditText
-        android:id="@+id/et_phone_number"
-        style="@style/et_bright_large"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="@string/et_phone_number_hint"
-        android:inputType="number"
-        android:maxLength="20"
-        android:layout_below="@+id/tv_phone_number"
-        android:layout_alignLeft="@+id/tv_phone_number"
-        android:layout_alignStart="@+id/tv_phone_number"
-        android:layout_marginTop="15dp" />
-
     <Spinner
         android:id="@+id/sn_phone_number_type"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/et_highlight_border"
+        android:layout_marginRight="@dimen/large_space"
         android:entries="@array/net_provider_array"
         android:layout_below="@+id/tv_net_provider"
         android:layout_alignLeft="@+id/tv_net_provider"
@@ -69,6 +57,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sn_phone_number_type"
         android:text="@string/et_phone_number_hint" />
+
+    <EditText
+        android:id="@+id/et_phone_number"
+        style="@style/et_bright_large"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="@string/et_phone_number_hint"
+        android:inputType="number"
+        android:maxLength="20"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/tv_phone_number" />
 
     <Button
         android:id="@+id/btn_phone_number_ok"
@@ -93,7 +92,6 @@
         android:text="@string/btn_finger_printer_cancel"
         android:textSize="@dimen/font_20_sp"
         app:layout_widthPercent="40%" />
-
 
 
 </android.support.percent.PercentRelativeLayout>

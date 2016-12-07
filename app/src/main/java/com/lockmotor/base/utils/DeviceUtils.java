@@ -139,11 +139,10 @@ public class DeviceUtils {
 
     public static void sendSms(String phoneNumber, String content)
     {
-        //TODO uncomment
-//        try {
-//            smsManager.sendTextMessage(phoneNumber, null,content, null, null);
-//        } catch (Exception e) {
-//            ToastUtils.showErrorMessageWithSuperToast("Unable to send sms!!", "AppUtils");
-//        }
+        try {
+            smsManager.sendTextMessage(phoneNumber, null,content, null, null);
+        } catch (Exception e) {
+            ToastUtils.showErrorMessageWithSuperToast("Unable to send sms!!", "AppUtils");
+        }
     }
 }

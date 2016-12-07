@@ -133,18 +133,11 @@ public class HomeViewModel {
     }
 
     /**
-     * TODO receive data from server
+     *
      * Send message to device to turn off anti thief, show noti to user after sent
      *
      *
      */
-//    public void toggleAntiThief(MotionEvent event, boolean isOn) {
-//        if (event.getAction() == MotionEvent.ACTION_DOWN && !isOn) {
-//            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_UNLOCK);
-//        }else {
-//            DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CONTENT_LOCK);
-//        }
-//    }
 
     public void toggleAntiThief(boolean isOn) {
         if (!isOn) {

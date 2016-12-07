@@ -33,6 +33,7 @@
     <TextView
         android:id="@+id/tv_account_info"
         android:layout_width="match_parent"
+        android:minHeight="50dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/account_check_toolbar"
         android:layout_marginTop="@dimen/large_space"
@@ -48,12 +49,13 @@
         style="@style/btn_orange_border_radius"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_below="@id/tv_account_info"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/large_space"
         android:background="@drawable/btn_orange_border_radius"
         android:elevation="@dimen/elevation"
         android:text="@string/btn_finger_printer_ok"
-        android:textSize="@dimen/font_20_sp" />
+        android:textSize="@dimen/font_20_sp"
+        android:layout_below="@+id/tv_account_info"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="@dimen/large_space"/>
 
 </RelativeLayout>

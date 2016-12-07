@@ -32,7 +32,10 @@ import rx.subscriptions.CompositeSubscription;
 /**
  * Created by trandinhdat on 8/13/16.
  */
-public class SettingActivity extends LockMotorActivity implements RechargeDialog.RechargeDialogListener {
+public class SettingActivity extends LockMotorActivity implements
+        RechargeDialog.RechargeDialogListener,
+        SettingDevicePhoneDialog.SettingDevicePhoneListener,
+        SettingFingerDialog.SettingFingerListener{
     @Inject
     SharedPreferences sharedPreferences;
     @Inject
@@ -58,6 +61,7 @@ public class SettingActivity extends LockMotorActivity implements RechargeDialog
     private SettingFingerDialog settingFingerDialog;
     private SettingDevicePhoneDialog settingDevicePhoneDialog;
     private ChangePasswordDialog changePasswordDialog;
+    private  AccountCheckDialog accountCheckDialog;
     private int count = 0;
 
     @Override
@@ -119,7 +123,7 @@ public class SettingActivity extends LockMotorActivity implements RechargeDialog
                                     Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
                         }else {
                             DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.CHECK_ACCOUNT_STRING);
-                            callAPICheckAccount(GlobalConstant.CHECK_ACCOUNT_ID);
+                            callAPI(GlobalConstant.CHECK_ACCOUNT_ID);
                         }
                     }
                 }));
@@ -136,6 +140,7 @@ public class SettingActivity extends LockMotorActivity implements RechargeDialog
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
+                        GlobalConstant.FINGER_ID_LIST = sharedPreferences.getString(GlobalConstant.FINGER_ID_KEY,"");
                         settingFingerDialog.show();
                     }
                 }));
@@ -168,7 +173,7 @@ public class SettingActivity extends LockMotorActivity implements RechargeDialog
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         rechargeDialog.getWindow().setAttributes(lp);
 
-        settingFingerDialog = new SettingFingerDialog(this);
+        settingFingerDialog = new SettingFingerDialog(this,this);
         settingFingerDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         settingFingerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         settingFingerDialog.setContentView(R.layout.dialog_setting_finger_printer);
@@ -176,7 +181,7 @@ public class SettingActivity extends LockMotorActivity implements RechargeDialog
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         settingFingerDialog.getWindow().setAttributes(lp);
 
-        settingDevicePhoneDialog = new SettingDevicePhoneDialog(this);
+        settingDevicePhoneDialog = new SettingDevicePhoneDialog(this,this);
         settingDevicePhoneDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         settingDevicePhoneDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         settingDevicePhoneDialog.setContentView(R.layout.dialog_setting_phone_number);
@@ -191,30 +196,60 @@ public class SettingActivity extends LockMotorActivity implements RechargeDialog
         lp.copyFrom(changePasswordDialog.getWindow().getAttributes());
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         changePasswordDialog.getWindow().setAttributes(lp);
+
+        accountCheckDialog = new AccountCheckDialog(this);
+        accountCheckDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+        accountCheckDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        accountCheckDialog.setContentView(R.layout.dialog_account_check);
+        lp.copyFrom(accountCheckDialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        accountCheckDialog.getWindow().setAttributes(lp);
     }
 
     //----------------------------------------------------------------------------------------------
     //Call API part
     //----------------------------------------------------------------------------------------------
-    void callAPICheckAccount(final int id){
-        showLoadingDialog();
+    void callAPI(final int id){
+        if(id != GlobalConstant.FINGER_UPDATE_ID) {
+            showLoadingDialog();
+        }
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //TODO replace teet1 with phone number
-                InfoRequest param = new InfoRequest("teet1");
+                InfoRequest param = new InfoRequest(GlobalConstant.decryptPhoneNumber());
                 Call<InfoResponse> call = service.getInfo(param);
                 call.enqueue(new Callback<InfoResponse>() {
                     @Override
                     public void onResponse(Call<InfoResponse> call, Response<InfoResponse> response) {
-                        if (!response.body().getMessage().equals("")) {
+
+                        if(!response.body().getStatus().equals("OK")){
+                            return;
+                        }
+
+                        if (!response.body().getMessage().equals("") && !response.body().getMessage().equals("null_dattd2210")) {
                             handler.removeCallbacksAndMessages(null);
                             dismissLoadingDialog();
                             count = 0;
                             switch (id){
                                 case GlobalConstant.CHECK_ACCOUNT_ID:
-                                    //TODO display UI to user
+                                    accountCheckDialog.setAccountInfo(response.body().getMessage());
+                                    accountCheckDialog.show();
+                                    break;
+                                case GlobalConstant.FINGER_UPDATE_ID:
+                                    showConfirmDialog(true);
+                                    dismissFingerSetupLoadingDialog();
+
+                                    GlobalConstant.FINGER_ID_LIST += GlobalConstant.ADDED_ID;
+                                    sharedPreferences.edit().putString(GlobalConstant.FINGER_ID_KEY,
+                                            GlobalConstant.FINGER_ID_LIST).apply();
+                                    break;
+                                case GlobalConstant.FINGER_DELETE_ID:
+                                    showConfirmDialog(true);
+
+                                    GlobalConstant.FINGER_ID_LIST = GlobalConstant.FINGER_ID_LIST.replace(GlobalConstant.DELETE_ID,"");
+                                    sharedPreferences.edit().putString(GlobalConstant.FINGER_ID_KEY,
+                                            GlobalConstant.FINGER_ID_LIST).apply();
                                     break;
                                 default:
                                     showConfirmDialog(true);
@@ -241,6 +276,7 @@ public class SettingActivity extends LockMotorActivity implements RechargeDialog
         count++;
         if (count >= GlobalConstant.MAX_WAITING_TIME / GlobalConstant.AUTO_CALL_API_TIME) {
             dismissLoadingDialog();
+            dismissFingerSetupLoadingDialog();
             count = 0;
             showConfirmDialog(false);
             return true;
@@ -249,11 +285,27 @@ public class SettingActivity extends LockMotorActivity implements RechargeDialog
     }
 
     //----------------------------------------------------------------------------------------------
-    //Implement listener
+    //Implement listeners
     //----------------------------------------------------------------------------------------------
 
     @Override
     public void rechargeBtnOKClick() {
-        callAPICheckAccount(GlobalConstant.RECHARGE_ACCOUNT_ID);
+        callAPI(GlobalConstant.RECHARGE_ACCOUNT_ID);
+    }
+
+    @Override
+    public void settingPhoneBtnOkClick() {
+        callAPI(GlobalConstant.PHONE_NUMBER_UPDATE_ID);
+    }
+
+    @Override
+    public void settingFingerBtnAddClick() {
+        showFingerSetupLoadingDialog();
+        callAPI(GlobalConstant.FINGER_UPDATE_ID);
+    }
+
+    @Override
+    public void settingFingerBtnDeleteClick() {
+        callAPI(GlobalConstant.FINGER_DELETE_ID);
     }
 }

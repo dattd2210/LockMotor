@@ -217,9 +217,10 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
                     sharedPreferences.getString(GlobalConstant.DEVICE_PHONE_NUMBER_KEY, "");
             GlobalConstant.PASSWORD = sharedPreferences.getString(GlobalConstant.PASSWORD_KEY, "");
             GlobalConstant.PASSWORD_LENGTH = sharedPreferences.getInt(GlobalConstant.PASSWORD_LENGTH_KEY, 0);
-//            GlobalConstant.PASSWORD =
-//                    GlobalConstant.decryptPassword(sharedPreferences.getString(GlobalConstant.PASSWORD_KEY, ""),
-//                            sharedPreferences.getInt(GlobalConstant.PASSWORD_LENGTH_KEY, 0));
+            GlobalConstant.PHONE_NUMBER = sharedPreferences.getString(GlobalConstant.PHONE_NUMBER_KEY, "");
+            isTurnOnAntiThief = sharedPreferences.getBoolean(GlobalConstant.ANTI_THIEF_STATUS_KEY, true);
+            viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
+                    tv_anti_thief, !isTurnOnAntiThief);
         }
 
     }
@@ -338,18 +339,24 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
                         isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
                                 tv_anti_thief, isTurnOnAntiThief);
                         viewModel.toggleAntiThief(isTurnOnAntiThief);
+                        sharedPreferences.edit().putBoolean(GlobalConstant.ANTI_THIEF_STATUS_KEY,
+                                isTurnOnAntiThief).apply();
                         showLoadingDialog();
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                //TODO replace teet1 with phone number
-                                InfoRequest param = new InfoRequest("teet1");
+                                InfoRequest param = new InfoRequest(GlobalConstant.decryptPhoneNumber());
                                 Call<InfoResponse> call = service.getInfo(param);
                                 call.enqueue(new Callback<InfoResponse>() {
                                     @Override
                                     public void onResponse(Call<InfoResponse> call, Response<InfoResponse> response) {
-                                        if (!response.body().getMessage().equals("")) {
+                                        if(!response.body().getStatus().equals("OK")){
+                                            return;
+                                        }
+
+                                        if (!response.body().getMessage().equals("")
+                                                && !response.body().getMessage().equals("null_dattd2210")) {
                                             handler.removeCallbacksAndMessages(null);
                                             dismissLoadingDialog();
                                             count = 0;
@@ -362,7 +369,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
 
                                     }
                                 });
-                                if (isReachMaxWaitingTime()) {
+                                if (isReachMaxWaitingTime(false)) {
                                     handler.removeCallbacksAndMessages(null);
                                 } else {
                                     handler.postDelayed(this, GlobalConstant.AUTO_CALL_API_TIME);
@@ -382,18 +389,24 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
                         isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
                                 tv_anti_thief, isTurnOnAntiThief);
                         viewModel.toggleAntiThief(isTurnOnAntiThief);
+                        sharedPreferences.edit().putBoolean(GlobalConstant.ANTI_THIEF_STATUS_KEY,
+                                isTurnOnAntiThief).apply();
                         showLoadingDialog();
                         final Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                //TODO replace teet1 with phone number
-                                InfoRequest param = new InfoRequest("teet1");
+                                InfoRequest param = new InfoRequest(GlobalConstant.decryptPhoneNumber());
                                 Call<InfoResponse> call = service.getInfo(param);
                                 call.enqueue(new Callback<InfoResponse>() {
                                     @Override
                                     public void onResponse(Call<InfoResponse> call, Response<InfoResponse> response) {
-                                        if (!response.body().getMessage().equals("")) {
+                                        if(!response.body().getStatus().equals("OK")){
+                                            return;
+                                        }
+
+                                        if (!response.body().getMessage().equals("")
+                                                && !response.body().getMessage().equals("null_dattd2210")) {
                                             handler.removeCallbacksAndMessages(null);
                                             dismissLoadingDialog();
                                             count = 0;
@@ -406,7 +419,7 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
 
                                     }
                                 });
-                                if (isReachMaxWaitingTime()) {
+                                if (isReachMaxWaitingTime(false)) {
                                     handler.removeCallbacksAndMessages(null);
                                 } else {
                                     handler.postDelayed(this, GlobalConstant.AUTO_CALL_API_TIME);
@@ -463,12 +476,16 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         return true;
     }
 
-    private boolean isReachMaxWaitingTime() {
+    private boolean isReachMaxWaitingTime(boolean isFingerLoading) {
         count++;
         if (count >= GlobalConstant.MAX_WAITING_TIME / GlobalConstant.AUTO_CALL_API_TIME) {
-            isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
-                    tv_anti_thief, isTurnOnAntiThief);
-            viewModel.toggleAntiThief(isTurnOnAntiThief);
+            if(!isFingerLoading){
+                isTurnOnAntiThief = viewModel.updateAntiThiefView(iv_anti_thief, iv_anti_thief_sub,
+                        tv_anti_thief, isTurnOnAntiThief);
+                viewModel.toggleAntiThief(isTurnOnAntiThief);
+                sharedPreferences.edit().putBoolean(GlobalConstant.ANTI_THIEF_STATUS_KEY,
+                        isTurnOnAntiThief).apply();
+            }
             dismissLoadingDialog();
             count = 0;
             showConfirmDialog(false);
@@ -487,19 +504,6 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
 
     @Override
     public void btnDoneClicked() {
-        //Save to Preferences
-        sharedPreferences.edit().putString(GlobalConstant.DEVICE_PHONE_NUMBER_KEY,
-                configDialog.getDeviceNumber()).apply();
-        sharedPreferences.edit().putString(GlobalConstant.PASSWORD_KEY,
-                GlobalConstant.encryptPassword(configDialog.getPassword())).apply();
-        sharedPreferences.edit().putInt(GlobalConstant.PASSWORD_LENGTH_KEY,
-                configDialog.getPassword().length()).apply();
-
-        //Set data to globalConstant thus we can reuse it later
-        GlobalConstant.DEVICE_PHONE_NUMBER = configDialog.getDeviceNumber();
-        GlobalConstant.PASSWORD = GlobalConstant.encryptPassword(configDialog.getPassword());
-        GlobalConstant.PASSWORD_LENGTH = configDialog.getPassword().length();
-
         //Send data to device
         DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER, GlobalConstant.CONTENT_UPDATE_PHONE + " " + configDialog.getPhoneNumber());
         DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER, GlobalConstant.CONTENT_UPDATE_FINGER + " 0");
@@ -508,8 +512,66 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
         configDialog.dismiss();
 
         //show config finger dialog
-//        showFingerSetupLoadingDialog();
-        //TODO start service to lister on server
+        showFingerSetupLoadingDialog();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                GlobalConstant.PHONE_NUMBER = configDialog.getPhoneNumber();
+                InfoRequest param = new InfoRequest(GlobalConstant.decryptPhoneNumber());
+                Call<InfoResponse> call = service.getInfo(param);
+                call.enqueue(new Callback<InfoResponse>() {
+                    @Override
+                    public void onResponse(Call<InfoResponse> call, Response<InfoResponse> response) {
+                        if(!response.body().getStatus().equals("OK")){
+                            return;
+                        }
+
+                        if (!response.body().getMessage().equals("")
+                                && !response.body().getMessage().equals("null_dattd2210")) {
+                            handler.removeCallbacksAndMessages(null);
+                            count = 0;
+                            showConfirmDialog(true);
+                            saveUserData();
+                            dismissFingerSetupLoadingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<InfoResponse> call, Throwable t) {
+
+                    }
+                });
+                if (isReachMaxWaitingTime(true)) {
+                    handler.removeCallbacksAndMessages(null);
+                    dismissFingerSetupLoadingDialog();
+                    GlobalConstant.PHONE_NUMBER = "";
+                } else {
+                    handler.postDelayed(this, GlobalConstant.AUTO_CALL_API_TIME);
+                }
+            }
+        }, GlobalConstant.AUTO_CALL_API_TIME);
+    }
+
+    private void saveUserData(){
+        //Save to Preferences
+        sharedPreferences.edit().putString(GlobalConstant.DEVICE_PHONE_NUMBER_KEY,
+                configDialog.getDeviceNumber()).apply();
+        sharedPreferences.edit().putString(GlobalConstant.PASSWORD_KEY,
+                GlobalConstant.encryptPassword(configDialog.getPassword())).apply();
+        sharedPreferences.edit().putInt(GlobalConstant.PASSWORD_LENGTH_KEY,
+                configDialog.getPassword().length()).apply();
+        sharedPreferences.edit().putString(GlobalConstant.PHONE_NUMBER_KEY,
+                configDialog.getPhoneNumber()).apply();
+        sharedPreferences.edit().putBoolean(GlobalConstant.ANTI_THIEF_STATUS_KEY,
+                true).apply();
+
+        //Set data to globalConstant thus we can reuse it later
+        GlobalConstant.DEVICE_PHONE_NUMBER = configDialog.getDeviceNumber();
+        GlobalConstant.PASSWORD = GlobalConstant.encryptPassword(configDialog.getPassword());
+        GlobalConstant.PASSWORD_LENGTH = configDialog.getPassword().length();
+        GlobalConstant.PHONE_NUMBER = configDialog.getPhoneNumber();
+        isTurnOnAntiThief = true;
     }
 
     //----------------------------------------------------------------------------------------------

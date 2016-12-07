@@ -30,7 +30,7 @@ public abstract class LockMotorActivity extends BaseActivity {
 
     protected void initialiseFingerSetupLoadingDialog() {
         loadingFingerSetupDialog = new Dialog(this, R.style.CustomDialogLoading);
-        View v = LayoutInflater.from(this).inflate(R.layout.dialog_loading_finger_setup, null);
+        View v = LayoutInflater.from(this).inflate(R.layout.dialog_loading_finger, null);
         loadingFingerSetupDialog.setContentView(v);
         loadingFingerSetupDialog.setCancelable(false);
     }

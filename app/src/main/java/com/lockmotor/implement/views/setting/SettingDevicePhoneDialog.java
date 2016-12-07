@@ -36,23 +36,27 @@ public class SettingDevicePhoneDialog extends Dialog {
     Spinner sn_phone_number_type;
 
     private boolean isValidNumber = false;
+    private SettingDevicePhoneListener listener;
 
     public static final CompositeSubscription subscriptions = new CompositeSubscription();
 
-    public SettingDevicePhoneDialog(Context context) {
+    public SettingDevicePhoneDialog(Context context, SettingDevicePhoneListener listener) {
         super(context);
+        this.listener = listener;
     }
 
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         ButterKnife.bind(this);
+
     }
 
     @Override
     public void show() {
         super.show();
         initSubscription();
+        hideNetProvider(sn_phone_number_type);
     }
 
     @Override
@@ -122,15 +126,15 @@ public class SettingDevicePhoneDialog extends Dialog {
                 }
 
                 sendRequest();
-//                dismiss();
+                dismiss();
             }
         }));
     }
 
     private void sendRequest()
     {
-        //// TODO: send request and listen to server
         DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER, GlobalConstant.CONTENT_UPDATE_PHONE + " " + et_phone_number.getText().toString());
+        listener.settingPhoneBtnOkClick();
     }
 
     private void showErrorInput(EditText et) {
@@ -151,5 +155,12 @@ public class SettingDevicePhoneDialog extends Dialog {
     private void showNetProvider(Spinner sn, String phoneNumber) {
         sn.setEnabled(true);
         sn.setSelection(PhoneUtils.getNetProviderFromPhoneNumber(phoneNumber), true);
+    }
+
+    //----------------------------------------------------------------------------------------------
+    //Implement listener
+    //----------------------------------------------------------------------------------------------
+    public interface SettingDevicePhoneListener{
+        void settingPhoneBtnOkClick();
     }
 }

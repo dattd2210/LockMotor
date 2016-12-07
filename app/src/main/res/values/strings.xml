@@ -20,11 +20,14 @@
     <string name="btn_setting_phone_number">Cài đặt số điện thoại</string>
     <string name="btn_change_password">Thay đổi mật khẩu</string>
     <string name="btn_help">Hướng dẫn</string>
+    <string name="et_finger_default">Vân tay</string>
 
     <string name="error_message_lack_config">Cài đặt trước khi thao tác!</string>
     <string name="error_message_lack_card_number">Điền mã số thẻ trước khi thao tác!</string>
     <string name="error_message_lack_phone_number">Nhập số điện thoại trước khi thao tác!</string>
     <string name="error_message_wrong_password">Vui lòng nhập đúng mật khẩu!</string>
+
+    <string name="hint_message_double_click">Tap lần nữa để xóa vân tay!</string>
 
     <!--Account Recharge Dialog-->
     <string name="tv_recharge_title">Nạp tài khoản</string>
@@ -41,6 +44,8 @@
     <string name="sn_action_type_create">Thêm mới</string>
     <string name="sn_action_type_delete">Xóa</string>
     <string name="sn_action_type_edit">Sửa</string>
+    <string name="tv_vehicle_owner">Dấu vân tay chủ xe (mặc định)</string>
+    <string name="btn_add_finger">Thêm vân tay</string>
 
     <!--Phone Number Dialog-->
     <string name="tv_phone_number_title">Cài đặt số điện thoại</string>
@@ -75,5 +80,6 @@
     <string name="tv_network_provider">Nhà mạng</string>
     <string name="btn_config_next">Tiếp theo</string>
     <string name="btn_skip">Bỏ qua</string>
+    <string name="tv_finger_hint">Đưa ngón tay vào cảm biến để tiền hành\ncài đặt dấu vân tay!</string>
 
 </resources>
