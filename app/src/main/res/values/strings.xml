@@ -82,4 +82,7 @@
     <string name="btn_skip">Bỏ qua</string>
     <string name="tv_finger_hint">Đưa ngón tay vào cảm biến để tiền hành\ncài đặt dấu vân tay!</string>
 
+    <!--Vehicle location activity-->
+    <string name="tv_vl_title">Vị trí xe</string>
+
 </resources>

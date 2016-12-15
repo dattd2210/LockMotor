@@ -41,7 +41,7 @@ public class ChangePasswordDialog extends Dialog {
 
     public static final CompositeSubscription subscriptions = new CompositeSubscription();
 
-    public ChangePasswordDialog(Context context,SharedPreferences sharedPreferences) {
+    public ChangePasswordDialog(Context context, SharedPreferences sharedPreferences) {
         super(context);
         this.sharedPreferences = sharedPreferences;
     }

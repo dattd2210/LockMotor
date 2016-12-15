@@ -70,12 +70,12 @@ public class SettingDevicePhoneDialog extends Dialog {
     //----------------------------------------------------------------------------------------------
     private void initSubscription() {
         subscriptions.add(RxView.clicks(btn_phone_number_cancel)
-        .subscribe(new Action1<Void>() {
-            @Override
-            public void call(Void aVoid) {
-                dismiss();
-            }
-        }));
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        dismiss();
+                    }
+                }));
 
         subscriptions.add(RxTextView.textChanges(et_phone_number)
                 .map(new Func1<CharSequence, Boolean>() {
@@ -105,34 +105,32 @@ public class SettingDevicePhoneDialog extends Dialog {
                 }));
 
         subscriptions.add(RxView.clicks(btn_phone_number_ok)
-        .subscribe(new Action1<Void>() {
-            @Override
-            public void call(Void aVoid) {
-                if(GlobalConstant.DEVICE_PHONE_NUMBER == "")
-                {
-                    SuperToast.create(getContext(),
-                            getContext().getResources().getString(R.string.error_message_lack_config),
-                            SuperToast.Duration.SHORT,
-                            Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
-                    return;
-                }
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        if (GlobalConstant.DEVICE_PHONE_NUMBER == "") {
+                            SuperToast.create(getContext(),
+                                    getContext().getResources().getString(R.string.error_message_lack_config),
+                                    SuperToast.Duration.SHORT,
+                                    Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                            return;
+                        }
 
-                if(!isValidNumber){
-                    SuperToast.create(getContext(),
-                            getContext().getResources().getString(R.string.error_message_lack_phone_number),
-                            SuperToast.Duration.SHORT,
-                            Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
-                    return;
-                }
+                        if (!isValidNumber) {
+                            SuperToast.create(getContext(),
+                                    getContext().getResources().getString(R.string.error_message_lack_phone_number),
+                                    SuperToast.Duration.SHORT,
+                                    Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                            return;
+                        }
 
-                sendRequest();
-                dismiss();
-            }
-        }));
+                        sendRequest();
+                        dismiss();
+                    }
+                }));
     }
 
-    private void sendRequest()
-    {
+    private void sendRequest() {
         DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER, GlobalConstant.CONTENT_UPDATE_PHONE + " " + et_phone_number.getText().toString());
         listener.settingPhoneBtnOkClick();
     }
@@ -160,7 +158,7 @@ public class SettingDevicePhoneDialog extends Dialog {
     //----------------------------------------------------------------------------------------------
     //Implement listener
     //----------------------------------------------------------------------------------------------
-    public interface SettingDevicePhoneListener{
+    public interface SettingDevicePhoneListener {
         void settingPhoneBtnOkClick();
     }
 }

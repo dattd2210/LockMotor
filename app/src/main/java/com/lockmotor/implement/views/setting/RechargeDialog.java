@@ -31,7 +31,7 @@ public class RechargeDialog extends Dialog {
     public static final CompositeSubscription subscriptions = new CompositeSubscription();
     private RechargeDialogListener listener;
 
-    public RechargeDialog(Context context,RechargeDialogListener listener) {
+    public RechargeDialog(Context context, RechargeDialogListener listener) {
         super(context);
         this.listener = listener;
     }
@@ -65,40 +65,39 @@ public class RechargeDialog extends Dialog {
                         dismiss();
                     }
                 }));
+
         subscriptions.add(RxView.clicks(btn_recharge_ok)
-        .subscribe(new Action1<Void>() {
-            @Override
-            public void call(Void aVoid) {
-                if(GlobalConstant.DEVICE_PHONE_NUMBER == "")
-                {
-                    SuperToast.create(getContext(),
-                            getContext().getResources().getString(R.string.error_message_lack_config),
-                            SuperToast.Duration.SHORT,
-                            Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
-                    return;
-                }
+                .subscribe(new Action1<Void>() {
+                    @Override
+                    public void call(Void aVoid) {
+                        if (GlobalConstant.DEVICE_PHONE_NUMBER == "") {
+                            SuperToast.create(getContext(),
+                                    getContext().getResources().getString(R.string.error_message_lack_config),
+                                    SuperToast.Duration.SHORT,
+                                    Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                            return;
+                        }
 
-                if(et_num_card.getText().toString().equals("")){
-                    SuperToast.create(getContext(),
-                            getContext().getResources().getString(R.string.error_message_lack_card_number),
-                            SuperToast.Duration.SHORT,
-                            Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
-                    return;
-                }
+                        if (et_num_card.getText().toString().equals("")) {
+                            SuperToast.create(getContext(),
+                                    getContext().getResources().getString(R.string.error_message_lack_card_number),
+                                    SuperToast.Duration.SHORT,
+                                    Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                            return;
+                        }
 
-                sendRequest();
-                dismiss();
-            }
-        }));
+                        sendRequest();
+                        dismiss();
+                    }
+                }));
     }
 
-    private void sendRequest()
-    {
-        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER,GlobalConstant.RECHARGE+et_num_card+"#");
+    private void sendRequest() {
+        DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER, GlobalConstant.RECHARGE + et_num_card + "#");
         listener.rechargeBtnOKClick();
     }
 
-    public interface RechargeDialogListener{
+    public interface RechargeDialogListener {
         void rechargeBtnOKClick();
     }
 }

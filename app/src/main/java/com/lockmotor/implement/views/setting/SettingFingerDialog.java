@@ -51,7 +51,7 @@ public class SettingFingerDialog extends Dialog {
 
     public static final CompositeSubscription subscriptions = new CompositeSubscription();
     private SettingFingerListener listener;
-    private int count1,count2,count3,count4 = 0;
+    private int count1, count2, count3, count4 = 0;
 
     public SettingFingerDialog(Context context, SettingFingerListener listener) {
         super(context);
@@ -93,6 +93,14 @@ public class SettingFingerDialog extends Dialog {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
+                        if (GlobalConstant.DEVICE_PHONE_NUMBER == "") {
+                            SuperToast.create(getContext(),
+                                    getContext().getResources().getString(R.string.error_message_lack_config),
+                                    SuperToast.Duration.SHORT,
+                                    Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                            return;
+                        }
+
                         sendRequest();
                     }
                 }));
@@ -101,6 +109,14 @@ public class SettingFingerDialog extends Dialog {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
+                        if (GlobalConstant.DEVICE_PHONE_NUMBER == "") {
+                            SuperToast.create(getContext(),
+                                    getContext().getResources().getString(R.string.error_message_lack_config),
+                                    SuperToast.Duration.SHORT,
+                                    Style.getStyle(Style.RED, SuperToast.Animations.FLYIN)).show();
+                            return;
+                        }
+
                         sendRequest();
                     }
                 }));
@@ -117,9 +133,9 @@ public class SettingFingerDialog extends Dialog {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        count1 ++;
+                        count1++;
                         count2 = count3 = count4 = 0;
-                        if(count1 >= 2){
+                        if (count1 >= 2) {
                             deleteRequest(1);
                             return;
                         }
@@ -134,9 +150,9 @@ public class SettingFingerDialog extends Dialog {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        count4 ++;
+                        count4++;
                         count2 = count3 = count1 = 0;
-                        if(count4 >= 2){
+                        if (count4 >= 2) {
                             deleteRequest(4);
                             return;
                         }
@@ -151,9 +167,9 @@ public class SettingFingerDialog extends Dialog {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        count2 ++;
+                        count2++;
                         count1 = count3 = count4 = 0;
-                        if(count2 >= 2){
+                        if (count2 >= 2) {
                             deleteRequest(2);
                             return;
                         }
@@ -168,9 +184,9 @@ public class SettingFingerDialog extends Dialog {
                 .subscribe(new Action1<Void>() {
                     @Override
                     public void call(Void aVoid) {
-                        count3 ++;
+                        count3++;
                         count2 = count1 = count4 = 0;
-                        if(count3 >= 2){
+                        if (count3 >= 2) {
                             deleteRequest(3);
                             return;
                         }
@@ -188,9 +204,9 @@ public class SettingFingerDialog extends Dialog {
         listener.settingFingerBtnAddClick();
     }
 
-    private void deleteRequest(int id){
+    private void deleteRequest(int id) {
         count1 = count2 = count3 = count4 = 0;
-        GlobalConstant.DELETE_ID = id+"";
+        GlobalConstant.DELETE_ID = id + "";
         DeviceUtils.sendSms(GlobalConstant.DEVICE_PHONE_NUMBER, GlobalConstant.CONTENT_DELETE_FINGER + " " + id);
         listener.settingFingerBtnDeleteClick();
     }
@@ -205,45 +221,45 @@ public class SettingFingerDialog extends Dialog {
         }
 
         //finger 1
-        if(GlobalConstant.FINGER_ID_LIST.contains("1")){
+        if (GlobalConstant.FINGER_ID_LIST.contains("1")) {
             et_finger_id_1.setVisibility(View.VISIBLE);
-            et_finger_id_1.setText(getContext().getResources().getString(R.string.et_finger_default)+" 1");
+            et_finger_id_1.setText(getContext().getResources().getString(R.string.et_finger_default) + " 1");
             et_finger_id_1.clearFocus();
             btn_delete_finger_1.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             et_finger_id_1.setVisibility(View.GONE);
             btn_delete_finger_1.setVisibility(View.GONE);
         }
 
         //finger 2
-        if(GlobalConstant.FINGER_ID_LIST.contains("2")){
+        if (GlobalConstant.FINGER_ID_LIST.contains("2")) {
             et_finger_id_2.setVisibility(View.VISIBLE);
-            et_finger_id_2.setText(getContext().getResources().getString(R.string.et_finger_default)+" 2");
+            et_finger_id_2.setText(getContext().getResources().getString(R.string.et_finger_default) + " 2");
             et_finger_id_2.clearFocus();
             btn_delete_finger_2.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             et_finger_id_2.setVisibility(View.GONE);
             btn_delete_finger_2.setVisibility(View.GONE);
         }
 
         //finger 3
-        if(GlobalConstant.FINGER_ID_LIST.contains("3")){
+        if (GlobalConstant.FINGER_ID_LIST.contains("3")) {
             et_finger_id_3.setVisibility(View.VISIBLE);
-            et_finger_id_3.setText(getContext().getResources().getString(R.string.et_finger_default)+" 3");
+            et_finger_id_3.setText(getContext().getResources().getString(R.string.et_finger_default) + " 3");
             et_finger_id_3.clearFocus();
             btn_delete_finger_3.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             et_finger_id_3.setVisibility(View.GONE);
             btn_delete_finger_3.setVisibility(View.GONE);
         }
 
         //finger 4
-        if(GlobalConstant.FINGER_ID_LIST.contains("4")){
+        if (GlobalConstant.FINGER_ID_LIST.contains("4")) {
             et_finger_id_4.setVisibility(View.VISIBLE);
-            et_finger_id_4.setText(getContext().getResources().getString(R.string.et_finger_default)+" 4");
+            et_finger_id_4.setText(getContext().getResources().getString(R.string.et_finger_default) + " 4");
             et_finger_id_4.clearFocus();
             btn_delete_finger_4.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             et_finger_id_4.setVisibility(View.GONE);
             btn_delete_finger_4.setVisibility(View.GONE);
         }
@@ -251,6 +267,7 @@ public class SettingFingerDialog extends Dialog {
 
     public interface SettingFingerListener {
         void settingFingerBtnAddClick();
+
         void settingFingerBtnDeleteClick();
     }
 }

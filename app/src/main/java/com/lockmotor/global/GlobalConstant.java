@@ -16,6 +16,7 @@ public class GlobalConstant {
     public static final String CONTENT_UNLOCK = "UNLOCK";
     public static final String CONTENT_LOCK = "LOCK";
     public static final String CONTENT_FIND_LOCATION = "LOCATION";
+    public static final String CONTENT_END_FIND_LOCATION = "OFF_LOCATION";
     public static final String CONTENT_FIND_MY_BIKE = "FIND";
     public static final String CONTENT_UPDATE_PHONE = "SET_PHONE";
     public static final String CONTENT_UPDATE_FINGER = "SET_FINGER";

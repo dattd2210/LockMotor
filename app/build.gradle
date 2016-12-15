@@ -6,7 +6,7 @@ android {
     buildToolsVersion '23.0.3'
 
     defaultConfig {
-        applicationId "com.trandat.lockmotor"
+        applicationId "com.lockmotor"
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
@@ -51,4 +51,5 @@ dependencies {
     compile 'com.github.ybq:Android-SpinKit:1.1.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+    compile 'com.google.android.gms:play-services-maps:9.2.0'
 }

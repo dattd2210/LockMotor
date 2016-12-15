@@ -1,9 +1,8 @@
 package com.lockmotor.global.dagger;
 
 import com.lockmotor.implement.views.home.HomeActivity;
-import com.lockmotor.implement.views.setting.ChangePasswordDialog;
 import com.lockmotor.implement.views.setting.SettingActivity;
-import com.lockmotor.implement.views.setting.SettingFingerDialog;
+import com.lockmotor.implement.views.vehicle_location.VehicleLocationActivity;
 
 import javax.inject.Singleton;
 
@@ -20,7 +19,5 @@ public interface DIComponent {
 
     void inject(SettingActivity activity);
 
-    void inject(ChangePasswordDialog dialog);
-
-    void inject(SettingFingerDialog dialog);
+    void inject(VehicleLocationActivity activity);
 }

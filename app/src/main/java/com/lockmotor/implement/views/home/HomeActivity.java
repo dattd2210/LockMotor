@@ -31,6 +31,7 @@ import com.lockmotor.implement.models.InfoResponse;
 import com.lockmotor.implement.viewModels.HomeViewModel;
 import com.lockmotor.implement.views.setting.PasswordInputDialog;
 import com.lockmotor.implement.views.setting.SettingActivity;
+import com.lockmotor.implement.views.vehicle_location.VehicleLocationActivity;
 
 import java.io.File;
 
@@ -275,6 +276,10 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
 
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     viewModel.updateViewAfterClick(iv_find_location, motionEvent);
+
+                    Intent intent = new Intent(HomeActivity.this, VehicleLocationActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.acitivity_in_from_right_to_left, R.anim.hold);
                 }
             }
         }));
@@ -291,6 +296,10 @@ public class HomeActivity extends LockMotorActivity implements ConfigDialog.Even
 
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     viewModel.updateViewAfterClick(iv_find_location, motionEvent);
+
+                    Intent intent = new Intent(HomeActivity.this, VehicleLocationActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.acitivity_in_from_right_to_left, R.anim.hold);
                 }
             }
         }));
